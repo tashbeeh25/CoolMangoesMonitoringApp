@@ -131,10 +131,13 @@ public class QRscanner extends AppCompatActivity {
                 if (imageUri == null){
                     // Image is not picked yet
                     Toast.makeText(QRscanner.this, "Pick image first...", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(QRscanner.this, Dashboard.class);
+                    startActivity(intent);
                 }else{
                     // Image was picked, start scanning barcode/QR code
                     detectResultFromImage();
                 }
+
             }
         });
     }
