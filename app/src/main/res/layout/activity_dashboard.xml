@@ -51,6 +51,8 @@
             app:cardCornerRadius="15dp"
             app:cardElevation="12dp">
 
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -63,14 +65,19 @@
                     android:layout_gravity="center_horizontal"
                     android:src="@mipmap/ic_temp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/tempBtn"
+                    android:layout_width="145dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/password"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/black"
                     android:text="Temperature"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    app:backgroundTint="#2E0606" />
 
 
             </LinearLayout>
@@ -129,14 +136,19 @@
                     android:src="@mipmap/ic_humidity"
                     android:layout_gravity="center_horizontal"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/humBtn"
+                    android:layout_width="145dp"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/password"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/black"
                     android:text="Humidity"
-                    android:layout_gravity="center_horizontal"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
+                    app:backgroundTint="#2E0606" />
 
 
 
