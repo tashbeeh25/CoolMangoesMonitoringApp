@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.coolmangoesmonitoringapp">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Required to get image from camera -->
     <uses-permission android:name="android.permission.CAMERA" /> <!-- Required to get image from camera and Gallery -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoolMangoesMonitoringApp">
+        <activity
+            android:name=".CreateGroup"
+            android:exported="false" />
+        <activity
+            android:name=".PostWindo"
+            android:exported="false" />
+        <activity
+            android:name=".PostsDashboard"
+            android:exported="false" />
+        <activity
+            android:name=".chatwindo"
+            android:exported="false" />
+        <activity
+            android:name=".ChatUsers"
+            android:exported="false" />
         <activity
             android:name=".HumidityInfo"
             android:exported="false" />
@@ -39,6 +57,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".MyFirebaseClass"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

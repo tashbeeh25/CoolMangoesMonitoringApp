@@ -1,12 +1,11 @@
 package com.example.coolmangoesmonitoringapp;
 
-import static android.content.ContentValues.TAG;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -14,7 +13,6 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
@@ -23,7 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.util.Pair;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -129,13 +127,22 @@ public class QRscanner extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (imageUri == null){
+
                     // Image is not picked yet
                     Toast.makeText(QRscanner.this, "Pick image first...", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(QRscanner.this, Dashboard.class);
+                    Intent intent = new Intent(QRscanner.this, QRscanner.class);
                     startActivity(intent);
+
+
                 }else{
                     // Image was picked, start scanning barcode/QR code
                     detectResultFromImage();
+                    scanBtn.setEnabled( false );
+                    //Toast.makeText(QScanner.this, "Pick image first...", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(QRscanner.this, Dashboard.class);
+                    startActivity(intent);
+
                 }
 
             }
@@ -157,7 +164,7 @@ public class QRscanner extends AppCompatActivity {
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onFailure(@NonNull Exception e) {
+                        public void onFailure(Exception e) {
                             // Task failed with an exception, we can't get any detail
                             Toast.makeText(QRscanner.this, "Failed scanning due to " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
@@ -367,7 +374,7 @@ public class QRscanner extends AppCompatActivity {
 
     // Handle runtime permission results
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,  int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case CAMERA_REQUEST_CODE: {

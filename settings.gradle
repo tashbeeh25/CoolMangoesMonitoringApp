@@ -13,6 +13,7 @@ dependencyResolutionManagement {
         google()
         jcenter()
     }
+
 }
 rootProject.name = "CoolMangoesMonitoringApp"
 include ':app'

@@ -1,9 +1,28 @@
+buildscript {
+    repositories {
+        // Add this repository if not present
+        google()
+        // Other repositories...
+    }
+    dependencies {
+        // Other dependencies...
+        // Add the following classpath
+        classpath 'com.google.gms:google-services:4.4.0' // Use the latest version
+        classpath 'com.android.tools.build:gradle:8.1.4'
+        //classpath 'com.google.gms:google-services:4.4.0'// Use the latest version
+        //classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.5'  // Update to the latest version
+    }
+}
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id 'com.android.application' version '7.1.0' apply false
     id 'com.android.library' version '7.1.0' apply false
 }
 
+
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+

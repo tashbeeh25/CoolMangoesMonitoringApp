@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1070584892859",
+    "firebase_url": "https://cool-mangoes-fc-default-rtdb.firebaseio.com",
+    "project_id": "cool-mangoes-fc",
+    "storage_bucket": "cool-mangoes-fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070584892859:android:c382618a206752edc4c89e",
+        "android_client_info": {
+          "package_name": "com.example.coolmangoesmonitoringapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGIXwjez_He3UPKNskBEEHjKjYRgf_btQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
