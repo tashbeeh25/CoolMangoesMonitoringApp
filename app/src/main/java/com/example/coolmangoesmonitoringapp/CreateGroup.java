@@ -1,4 +1,4 @@
-package com.example.coolmangoesmonitoringapp;
+//package com.example.coolmangoesmonitoringapp;
 /*
 import androidx.appcompat.app.AppCompatActivity;
 

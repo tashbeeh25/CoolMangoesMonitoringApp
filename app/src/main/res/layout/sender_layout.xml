@@ -1,37 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profilerggg"
-        android:layout_width="5dp"
+        android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:src="@drawable/camera" />
+
+    <ImageView
+        android:id="@+id/message"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="50dp"
+        android:padding="12dp"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/profilerggg"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="wrap"
+        app:layout_constraintWidth_percent="0.75" />
 
     <TextView
         android:id="@+id/msgsendertyp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="45dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="1dp"
+        android:layout_marginEnd="45dp"
         android:layout_marginBottom="5dp"
-        android:layout_toLeftOf="@id/profilerggg"
+        android:layout_toLeftOf="@id/message"
         android:background="@drawable/sender_shape"
         android:fontFamily="@font/poppins_regular"
         android:padding="7dp"
-        android:text="aysuhvish"
+        android:text="Techcoder"
         android:textColor="@color/black"
         android:textStyle="bold" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/voiceRecordCV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="1dp"
+        android:layout_toStartOf="@+id/profilerggg"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="visible">
+
+
+        <ImageView
+            android:id="@+id/voiceVisualizerImageView"
+            android:layout_width="190dp"
+            android:layout_height="61dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="40dp"
+            android:src="@drawable/waveform"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/recordBtn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="left"
+            android:layout_marginEnd="-4dp"
+            android:layout_toStartOf="@+id/voiceVisualizerImageView"
+            android:src="@drawable/play" />
+
+        <ImageView
+            android:id="@+id/stopBtn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="left"
+            android:layout_toStartOf="@+id/voiceVisualizerImageView"
+            android:src="@drawable/pause"
+            android:visibility="gone" />
+
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

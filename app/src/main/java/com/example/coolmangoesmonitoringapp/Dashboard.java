@@ -1,6 +1,9 @@
 package com.example.coolmangoesmonitoringapp;
 
 import androidx.appcompat.app.AlertDialog;
+
+import static com.example.coolmangoesmonitoringapp.Login.email;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
@@ -41,6 +44,9 @@ public class Dashboard extends AppCompatActivity {
     private TextView userNamesTextView;
     ProgressBar progressBar;
     int counter = 0;
+   // private OkHttpClient client;
+
+    String userAuthemail;
 
     //Float tempInt;
 
@@ -68,7 +74,14 @@ public class Dashboard extends AppCompatActivity {
 
 
 
-        showTempData();
+
+        userID();
+
+        if (userAuthemail == email){
+            showTempData();
+        }else{
+            Toast.makeText(Dashboard.this, "Unable to retrieve temp", Toast.LENGTH_SHORT).show();
+        }
 
 
         temperature_button.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +120,71 @@ public class Dashboard extends AppCompatActivity {
 
 
 
+    private void userID() {
+        OkHttpClient client1 = new OkHttpClient();
+
+        String apiUrl = "http://10.0.2.2:8000/api/latest-user/";
+
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .build();
+
+        client1.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject json = new JSONObject(responseData);
+                        String emaill = json.getString("email");
+
+                        userAuthemail = emaill;
+
+
+                        //Log.d(userID, "user id");
+
+                        //String temperature = json.getString("temperature");
+
+                        //String timestamp = json.getString("timestamp");
+
+                        //Float temp = Float.parseFloat(temperature);
+
+                        //float tempo = temp * 5;
+                        // float temp = 20;
+
+                        // Set the target value that you want to reach
+                        // final Float targetValue = tempo; // Adjust this value to your desired target
+
+                        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
+                        //final Timer t = new Timer();
+
+                        runOnUiThread(() -> {
+
+
+                            //tempInt = Float.parseFloat(temperature);
+
+                            //textView.setText(tempData);
+                            // Update your UI elements with the extracted data
+                            // For example, update TextViews with id, temperature, and timestamp
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // Handle error
+                }
+            }
+        });
+
+    }
+
+
+
 
     private void showTempData() {
         OkHttpClient client = new OkHttpClient();
@@ -133,6 +211,7 @@ public class Dashboard extends AppCompatActivity {
                         String temperature = json.getString("temperature");
 
                         String timestamp = json.getString("timestamp");
+                        String user_id = json.getString("user_id");
 
                         Float temp = Float.parseFloat(temperature);
 

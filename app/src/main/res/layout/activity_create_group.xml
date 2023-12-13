@@ -84,7 +84,7 @@
         android:backgroundTint="@color/purple_500"
         android:text="Post"
         app:backgroundTint="#2E0606" />
-    
+
 
     <EditText
         android:id="@+id/group_name"

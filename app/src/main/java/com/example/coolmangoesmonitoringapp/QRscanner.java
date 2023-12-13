@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -13,8 +14,11 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -22,8 +26,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,12 +44,33 @@ import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class QRscanner extends AppCompatActivity {
 
+    //int userID;
+    int userID;
+
+    private OkHttpClient client;
+
+    private OkHttpClient client1;
+
+
     // UI Views
-    private MaterialButton cameraBtn;
     private MaterialButton galleryBtn;
     private ImageView imageIv;
     private MaterialButton scanBtn;
@@ -64,11 +91,16 @@ public class QRscanner extends AppCompatActivity {
     private BarcodeScanner barcodeScanner;
 
     private static final String TAG ="MAIN_TAG";
+    private View cameraBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrscanner);
+
+        client = new OkHttpClient();
+
+
 
         // init UI views
         cameraBtn = findViewById(R.id.cameraBtn);
@@ -115,6 +147,9 @@ public class QRscanner extends AppCompatActivity {
                 if(checkStoragePermission()){
                     //permission required for camera already granted, launch camera intent
                     pickImageGallery();
+                    userID();
+
+
                 }else{
                     //permission required for camera already not granted, request permissions
                     requestStoragePermission();
@@ -148,7 +183,7 @@ public class QRscanner extends AppCompatActivity {
             }
         });
     }
-
+    
     private void detectResultFromImage(){
         try{
             // Prepare image from image url
@@ -183,9 +218,20 @@ public class QRscanner extends AppCompatActivity {
             Rect bounds = barcode.getBoundingBox();
             Point[] corners = barcode.getCornerPoints();
 
+
             // Raw info scanned from teh Barcode/QR code
             String rawValues = barcode.getRawValue();
+
+
+            Log.d(String.valueOf(userID), "LATEST ID");
+
+            qrCodeScanning(rawValues, userID);
+
+            Log.d(TAG, "THIS IS QR CODE");
+
             Log.d(TAG, "extractBarCodeQRCodeInfo: rawValue: "+ rawValues);
+
+
 
 
             int valueType = barcode.getValueType();
@@ -412,6 +458,149 @@ public class QRscanner extends AppCompatActivity {
             }
             break;
         }
+    }
+    private void qrCodeScanning(String qr_code, int userID) {
+        if (userID != 0){
+            RequestBody requestBody = new FormBody.Builder()
+                    .add("qr_code", qr_code)
+                    .add("user_id", String.valueOf(userID))
+                    .build();
+
+
+        Request request = new Request.Builder()
+                .url("http://10.0.2.2:8000/api/create-container/")
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    // Handle successful login
+                    String responseBody = response.body().string();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showSuccessToast();
+
+                            Intent intent = new Intent(QRscanner.this, Dashboard.class);
+                            startActivity(intent);
+                        }
+                    });
+                    // Parse the response if needed
+                } else {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showFailedToast();
+                        }
+                    });
+
+                    Intent intent = new Intent(QRscanner.this, QRscanner.class);
+                    startActivity(intent);
+                    // Handle login failure
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                // Handle network failure
+            }
+        });
+        }else {
+            // Handle the case where userID is null
+            // You can log an error, show a message, or take appropriate action
+            Log.e(TAG, "userID is null");
+        }
+
+    }
+
+
+    private void userID() {
+        client1 = new OkHttpClient();
+
+        String apiUrl = "http://10.0.2.2:8000/api/latest-user/";
+
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .build();
+
+        client1.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject json = new JSONObject(responseData);
+                        int ID = json.getInt("id");
+
+
+                        //Log.d(userID, "user id");
+
+                        //String temperature = json.getString("temperature");
+
+                        //String timestamp = json.getString("timestamp");
+
+                        //Float temp = Float.parseFloat(temperature);
+
+                        //float tempo = temp * 5;
+                        // float temp = 20;
+
+                        // Set the target value that you want to reach
+                       // final Float targetValue = tempo; // Adjust this value to your desired target
+
+                        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
+                        //final Timer t = new Timer();
+
+                        runOnUiThread(() -> {
+
+
+                            userID = ID;
+                            //tempInt = Float.parseFloat(temperature);
+
+                            //textView.setText(tempData);
+                            // Update your UI elements with the extracted data
+                            // For example, update TextViews with id, temperature, and timestamp
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // Handle error
+                }
+            }
+        });
+
+    }
+
+    private void showSuccessToast() {
+        // Create a Toast instance
+        Toast toast = Toast.makeText(this, "Successfully Connected to Container", Toast.LENGTH_SHORT);
+
+        // You can customize the position of the toast
+        toast.setGravity(Gravity.CENTER, 0, 0);
+
+        // Show the toast
+        toast.show();
+    }
+
+    private void showFailedToast() {
+        // Create a Toast instance
+        Toast toast = Toast.makeText(this, "Unable to create container", Toast.LENGTH_SHORT);
+
+        // You can customize the position of the toast
+        toast.setGravity(Gravity.CENTER, 0, 0);
+
+        // Show the toast
+        toast.show();
     }
 }
 

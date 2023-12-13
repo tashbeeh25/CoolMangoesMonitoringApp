@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +30,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Login extends AppCompatActivity {
+
+    public static String email;
 
     EditText emailEditText, passwordEditText;
 
@@ -67,7 +70,7 @@ public class Login extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = emailEditText.getText().toString();
+                email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
 
@@ -142,7 +145,7 @@ public class Login extends AppCompatActivity {
         toast.show();
     }
 
-    private void performLogin(String email, String password) {
+    public void performLogin(String email, String password) {
         RequestBody requestBody = new FormBody.Builder()
                 .add("email", email)
                 .add("password", password)
@@ -160,6 +163,8 @@ public class Login extends AppCompatActivity {
                     // Handle successful login
                     String responseBody = response.body().string();
 
+
+                    Log.d(responseBody, "body");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

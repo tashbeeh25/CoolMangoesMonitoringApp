@@ -52,6 +52,7 @@ public class Register extends AppCompatActivity {
     FirebaseStorage storage;
     ProgressDialog progressDialog;
 
+    Button register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class Register extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
 
         profile_img = findViewById(R.id.profile); // Replace with the actual ID from your layout XML
-        Button register = (Button) findViewById(R.id.reg_btn);
+        register = (Button) findViewById(R.id.reg_btn);
         first_name = findViewById(R.id.fname);
         last_name = findViewById(R.id.lname);
         username = findViewById(R.id.username);
@@ -122,7 +123,8 @@ public class Register extends AppCompatActivity {
                                                     public void onSuccess(Uri uri) {
                                                         imageUri = uri.toString();
                                                         Users users = new Users(id, usern, fn, ln, emaill, passwd, imageUri,status);
-                                                        Groups groups = new Groups(id, "Farmers_announce", "ANNOUNCEMENT: NEW EQUIPMENT");
+                                                        Groups groups = new Groups(id, "Farmers_2023", "ANNOUNCEMENT: NEW EQUIPMENT");
+
 
 
                                                         reference2.setValue(groups).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -130,7 +132,7 @@ public class Register extends AppCompatActivity {
                                                             public void onComplete( Task<Void> task) {
                                                                 if (task.isSuccessful()){
                                                                     progressDialog.show();
-                                                                    Intent intent = new Intent(Register.this,Dashboard.class);
+                                                                    Intent intent = new Intent(Register.this,QRscanner.class);
                                                                     startActivity(intent);
                                                                     finish();
                                                                 }else {
@@ -143,7 +145,7 @@ public class Register extends AppCompatActivity {
                                                             public void onComplete( Task<Void> task) {
                                                                 if (task.isSuccessful()){
                                                                     progressDialog.show();
-                                                                    Intent intent = new Intent(Register.this,Dashboard.class);
+                                                                    Intent intent = new Intent(Register.this,QRscanner.class);
                                                                     startActivity(intent);
                                                                     finish();
                                                                 }else {
@@ -161,14 +163,15 @@ public class Register extends AppCompatActivity {
                                     imageUri = "https://firebasestorage.googleapis.com/v0/b/cool-mangoes-fc.appspot.com/o/360_F_328113542_31B2IVU37qZ09cXXA6iMSXs62Optrwok.jpg?alt=media&token=02be7394-47e5-4f9c-abb0-81698a8acbc2";
                                     //     public Users(String user_id, String username, String first_name, String last_name,  String email, String password, String profilePic, String status) {
                                     Users users = new Users(id, usern, fn, ln, emaill, passwd, imageUri,status);
-                                    Groups groups = new Groups(id, "Farmers_announce", "ANNOUNCEMENT: NEW EQUIPMENT");
+                                    Groups groups = new Groups(id, "Farmers_2023", "ANNOUNCEMENT: NEW EQUIPMENT");
+
 
                                     reference2.setValue(groups).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete( Task<Void> task) {
                                             if (task.isSuccessful()){
                                                 progressDialog.show();
-                                                Intent intent = new Intent(Register.this,Dashboard.class);
+                                                Intent intent = new Intent(Register.this,QRscanner.class);
                                                 startActivity(intent);
                                                 finish();
                                             }else {
@@ -181,7 +184,7 @@ public class Register extends AppCompatActivity {
                                         public void onComplete( Task<Void> task) {
                                             if (task.isSuccessful()){
                                                 progressDialog.show();
-                                                Intent intent = new Intent(Register.this,Dashboard.class);
+                                                Intent intent = new Intent(Register.this,QRscanner.class);
                                                 startActivity(intent);
                                                 finish();
                                             }else {

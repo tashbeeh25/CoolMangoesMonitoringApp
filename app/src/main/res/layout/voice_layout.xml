@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/voiceRecordCV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true">
+
+        <!-- Add your visual representation here, such as an ImageView or View -->
+        <ImageView
+            android:id="@+id/voiceVisualizerImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/waveform"
+            android:scaleType="fitXY" />
+
+        <!-- Add other UI elements as needed, e.g., play and pause buttons -->
+
+        <ImageView
+            android:id="@+id/recordImgView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="left"
+            android:src="@drawable/play" />
+
+        <ImageView
+            android:id="@+id/stopImgView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/pause"
+            android:layout_gravity="left"
+            android:visibility="gone" />
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>
