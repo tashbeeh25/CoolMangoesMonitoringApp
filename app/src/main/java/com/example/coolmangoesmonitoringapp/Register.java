@@ -1,19 +1,21 @@
 package com.example.coolmangoesmonitoringapp;
 
-
-import androidx.appcompat.app.AppCompatActivity;
+import static com.example.coolmangoesmonitoringapp.NewGroup.name;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Group;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -78,9 +80,13 @@ public class Register extends AppCompatActivity {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
 
+        Log.d("NAME", name);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                String gn = name.toString();
+                Log.d("GN", gn);
 
                 String fn = first_name.getText().toString();
                 String ln = last_name.getText().toString();
@@ -107,8 +113,11 @@ public class Register extends AppCompatActivity {
                         public void onComplete( Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 String id = task.getResult().getUser().getUid();
+
                                 DatabaseReference reference = database.getReference().child("user").child(id);
-                                DatabaseReference reference2 = database.getReference().child("group").child(id);
+                                DatabaseReference reference1 = database.getReference().child("group").child(id);
+
+
 
                                 StorageReference storageReference = storage.getReference().child("Upload").child(id);
 
@@ -123,11 +132,9 @@ public class Register extends AppCompatActivity {
                                                     public void onSuccess(Uri uri) {
                                                         imageUri = uri.toString();
                                                         Users users = new Users(id, usern, fn, ln, emaill, passwd, imageUri,status);
-                                                        Groups groups = new Groups(id, "Farmers_2023", "ANNOUNCEMENT: NEW EQUIPMENT");
+                                                        Groups groups = new Groups(id, gn);
 
-
-
-                                                        reference2.setValue(groups).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        reference.setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete( Task<Void> task) {
                                                                 if (task.isSuccessful()){
@@ -136,11 +143,11 @@ public class Register extends AppCompatActivity {
                                                                     startActivity(intent);
                                                                     finish();
                                                                 }else {
-                                                                    Toast.makeText(Register.this, "Error in creating the group", Toast.LENGTH_SHORT).show();
+                                                                    Toast.makeText(Register.this, "Error in creating the user", Toast.LENGTH_SHORT).show();
                                                                 }
                                                             }
                                                         });
-                                                        reference.setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        reference1.setValue(groups).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete( Task<Void> task) {
                                                                 if (task.isSuccessful()){
@@ -163,10 +170,9 @@ public class Register extends AppCompatActivity {
                                     imageUri = "https://firebasestorage.googleapis.com/v0/b/cool-mangoes-fc.appspot.com/o/360_F_328113542_31B2IVU37qZ09cXXA6iMSXs62Optrwok.jpg?alt=media&token=02be7394-47e5-4f9c-abb0-81698a8acbc2";
                                     //     public Users(String user_id, String username, String first_name, String last_name,  String email, String password, String profilePic, String status) {
                                     Users users = new Users(id, usern, fn, ln, emaill, passwd, imageUri,status);
-                                    Groups groups = new Groups(id, "Farmers_2023", "ANNOUNCEMENT: NEW EQUIPMENT");
+                                    Groups groups = new Groups(id, gn);
 
-
-                                    reference2.setValue(groups).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    reference.setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete( Task<Void> task) {
                                             if (task.isSuccessful()){
@@ -175,11 +181,11 @@ public class Register extends AppCompatActivity {
                                                 startActivity(intent);
                                                 finish();
                                             }else {
-                                                Toast.makeText(Register.this, "Error in creating the groups", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(Register.this, "Error in creating the user", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
-                                    reference.setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    reference1.setValue(groups).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete( Task<Void> task) {
                                             if (task.isSuccessful()){

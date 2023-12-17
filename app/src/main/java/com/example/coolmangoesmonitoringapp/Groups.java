@@ -5,13 +5,11 @@ public class Groups {
     public Groups(){}
     String group_id;
     String name;
-    //String posts;
 
 
-    public Groups(String group_id, String name, String posts) {
+    public Groups(String group_id, String name) {
         this.group_id = group_id;
         this.name = name;
-        //this.posts = posts;
     }
 
     public String getGroup_id() {
