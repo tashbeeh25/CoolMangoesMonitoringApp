@@ -2,19 +2,14 @@ package com.example.coolmangoesmonitoringapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.Group;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -24,21 +19,86 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class PostsDashboard extends AppCompatActivity {
 
     FirebaseAuth auth;
-    RecyclerView mainUserRecyclerView;
-    GroupAdapter  adapter;
     FirebaseDatabase database;
-    ArrayList<Groups> groupArrayList;
+
+    private ListView listView;
+    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<String> listofgroups = new ArrayList<>();
+    private DatabaseReference groupRef;
+
     Button create_group;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts_dashboard);
+
+        create_group = findViewById(R.id.create_group);
+
+        // Initialize Firebase
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        groupRef = database.getReference().child("group");
+
+        // Initialize UI components
+        listView = findViewById(R.id.groupRecyclerView);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listofgroups);
+        listView.setAdapter(arrayAdapter);
+
+        // Retrieve and display groups
+        groupRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Set<String> set = new HashSet<>();
+                Iterator iter = snapshot.getChildren().iterator();
+
+                while (iter.hasNext()) {
+                    set.add(((DataSnapshot) iter.next()).getKey());
+                }
+                listofgroups.clear();
+                listofgroups.addAll(set);
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle onCancelled if needed
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                // Handle item click, for example, start a new activity
+                String selectedGroupName = listofgroups.get(position);
+                Intent intent = new Intent(PostsDashboard.this, PostWindo.class);
+                intent.putExtra("groupName", selectedGroupName);
+                startActivity(intent);
+            }
+        });
+
+        create_group.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostsDashboard.this, NewGroup.class);
+                startActivity(intent);
+            }
+        });
+    }
+}
+
+
+
+
+    /*
 
         database= FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -50,10 +110,7 @@ public class PostsDashboard extends AppCompatActivity {
 
         groupArrayList = new ArrayList<>();
 
-        mainUserRecyclerView = findViewById(R.id.groupRecyclerView);
         mainUserRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new GroupAdapter(PostsDashboard.this, groupArrayList);
-        mainUserRecyclerView.setAdapter(adapter);
 
         create_group.setOnClickListener(new View.OnClickListener() {
 
@@ -67,12 +124,30 @@ public class PostsDashboard extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot: snapshot.getChildren())
-                {
-                    Groups groups = dataSnapshot.getValue(Groups.class);
-                    groupArrayList.add(groups);
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    // Check if the data is of type String
+                    if (dataSnapshot.getValue() instanceof String) {
+                        String stringValue = (String) dataSnapshot.getValue();
+                        // Convert the String to a Groups object
+                        Groups groups = Groups.fromString(stringValue);
+                        // Continue processing the Groups object
+                        // Add your logic to handle the Groups object
+                    } else {
+                        // Convert the data to Groups object
+                        try {
+                            Groups groups = dataSnapshot.getValue(Groups.class);
+                            if (groups != null) {
+                                // Continue processing the Groups object
+                                // Add your logic to handle the Groups object
+                            } else {
+                                Log.e("PostsDashboard", "Failed to convert data to Groups object");
+                            }
+                        } catch (DatabaseException e) {
+                            // Handle the exception (e.g., log or show a Toast)
+                            Log.e("PostsDashboard", "Error converting data to Groups object: " + e.getMessage());
+                        }
+                    }
                 }
-                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -80,5 +155,4 @@ public class PostsDashboard extends AppCompatActivity {
 
             }
         });
-    }
-}
+    }*/

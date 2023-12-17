@@ -1,5 +1,6 @@
 package com.example.coolmangoesmonitoringapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -72,6 +73,8 @@ public class NewGroup extends AppCompatActivity {
 
         group_name = findViewById(R.id.group_name);
 
+        DatabaseReference reference = database.getReference().child("group");
+
 
         create_group.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +83,16 @@ public class NewGroup extends AppCompatActivity {
                 gn = group_name.getText().toString();
                 name = gn;
 
+                reference.child(gn).setValue("").addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()){
+                            Toast toast = Toast.makeText(NewGroup.this, "Successfully created a group", Toast.LENGTH_SHORT);
+
+                        }
+                    }
+                });
 
                 if (TextUtils.isEmpty(gn)) {
                     Toast.makeText(NewGroup.this, "Please enter a group name", Toast.LENGTH_SHORT).show();
@@ -148,7 +161,7 @@ public class NewGroup extends AppCompatActivity {
                         public void run() {
 
                             showSuccessToast();
-                            Intent intent = new Intent(NewGroup.this, Groups.class);
+                            Intent intent = new Intent(NewGroup.this, PostsDashboard.class);
                             startActivity(intent);
                         }
                     });

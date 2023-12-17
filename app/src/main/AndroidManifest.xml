@@ -23,17 +23,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoolMangoesMonitoringApp">
+
         <activity
             android:name=".NewGroup"
             android:exported="false" />
         <activity
-            android:name=".CreateGroup"
+            android:name=".PostsDashboard"
             android:exported="false" />
+        <activity
+            android:name=".Groups">
+        </activity>
         <activity
             android:name=".PostWindo"
-            android:exported="false" />
-        <activity
-            android:name=".PostsDashboard"
             android:exported="false" />
         <activity
             android:name=".chatwindo"

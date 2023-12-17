@@ -12,6 +12,9 @@ public class Groups {
         this.name = name;
     }
 
+    public Groups(String name) {
+    }
+
     public String getGroup_id() {
         return group_id;
     }
@@ -36,6 +39,10 @@ public class Groups {
     //    this.posts = posts;
     //}
 
+    // Static method to create a Groups object from a String
+    public static Groups fromString(String name) {
+        return new Groups(name);
+    }
 
 }
 

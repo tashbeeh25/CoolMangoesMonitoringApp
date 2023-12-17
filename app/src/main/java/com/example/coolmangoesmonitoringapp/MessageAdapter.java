@@ -398,22 +398,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
     }
 
 
-    /*
-    public class voiceViewHolder extends RecyclerView.ViewHolder {
-        CardView voiceRecordCV;
-        CardView voicePauseCV;
-        ImageView pauseIV;
-        ImageView recordIV;
-        ImageView voiceVisualizerImageView;
 
-        public voiceViewHolder(@NonNull View itemView) {
-            super(itemView);
-            voiceRecordCV = itemView.findViewById(R.id.recordBtn);
-            voicePauseCV = itemView.findViewById(R.id.pauseBtn);
-            pauseIV = itemView.findViewById(R.id.stopImgView);
-            recordIV = itemView.findViewById(R.id.recordImgView);
-            voiceVisualizerImageView = itemView.findViewById(R.id.voiceVisualizerImageView);
-        }
-    }*/
 
 }

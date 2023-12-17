@@ -80,13 +80,11 @@ public class Register extends AppCompatActivity {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
 
-        Log.d("NAME", name);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String gn = name.toString();
-                Log.d("GN", gn);
 
                 String fn = first_name.getText().toString();
                 String ln = last_name.getText().toString();
