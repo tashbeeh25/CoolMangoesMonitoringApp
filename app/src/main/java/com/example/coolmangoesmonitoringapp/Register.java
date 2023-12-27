@@ -2,6 +2,7 @@ package com.example.coolmangoesmonitoringapp;
 
 import static com.example.coolmangoesmonitoringapp.NewGroup.name;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +33,7 @@ import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -54,8 +57,11 @@ public class Register extends AppCompatActivity {
     FirebaseStorage storage;
     ProgressDialog progressDialog;
 
+    TextView log_txt;
+
     Button register;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,12 +85,21 @@ public class Register extends AppCompatActivity {
         username = findViewById(R.id.username);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+        log_txt = findViewById(R.id.log_text);
+
+        log_txt.setOnClickListener(new View.OnClickListener (){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Register.this, Login.class);
+                startActivity(intent);
+            }
+        });
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String gn = name.toString();
+                //String gn = name.toString();
 
                 String fn = first_name.getText().toString();
                 String ln = last_name.getText().toString();
@@ -130,7 +145,7 @@ public class Register extends AppCompatActivity {
                                                     public void onSuccess(Uri uri) {
                                                         imageUri = uri.toString();
                                                         Users users = new Users(id, usern, fn, ln, emaill, passwd, imageUri,status);
-                                                        Groups groups = new Groups(id, gn);
+                                                        //Groups groups = new Groups(id, gn);
 
                                                         reference.setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
@@ -145,19 +160,7 @@ public class Register extends AppCompatActivity {
                                                                 }
                                                             }
                                                         });
-                                                        reference1.setValue(groups).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete( Task<Void> task) {
-                                                                if (task.isSuccessful()){
-                                                                    progressDialog.show();
-                                                                    Intent intent = new Intent(Register.this,QRscanner.class);
-                                                                    startActivity(intent);
-                                                                    finish();
-                                                                }else {
-                                                                    Toast.makeText(Register.this, "Error in creating the user", Toast.LENGTH_SHORT).show();
-                                                                }
-                                                            }
-                                                        });
+
                                                     }
                                                 });
                                             }
@@ -167,31 +170,18 @@ public class Register extends AppCompatActivity {
                                     String status = "Hey I'm Using This Application";
                                     imageUri = "https://firebasestorage.googleapis.com/v0/b/cool-mangoes-fc.appspot.com/o/360_F_328113542_31B2IVU37qZ09cXXA6iMSXs62Optrwok.jpg?alt=media&token=02be7394-47e5-4f9c-abb0-81698a8acbc2";
                                     //     public Users(String user_id, String username, String first_name, String last_name,  String email, String password, String profilePic, String status) {
-                                    Users users = new Users(id, usern, fn, ln, emaill, passwd, imageUri,status);
-                                    Groups groups = new Groups(id, gn);
+                                    Users users = new Users(id, usern, fn, ln, emaill, passwd, imageUri, status);
+                                    //Groups groups = new Groups(id, gn);
 
                                     reference.setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
-                                        public void onComplete( Task<Void> task) {
-                                            if (task.isSuccessful()){
+                                        public void onComplete(Task<Void> task) {
+                                            if (task.isSuccessful()) {
                                                 progressDialog.show();
-                                                Intent intent = new Intent(Register.this,QRscanner.class);
+                                                Intent intent = new Intent(Register.this, QRscanner.class);
                                                 startActivity(intent);
                                                 finish();
-                                            }else {
-                                                Toast.makeText(Register.this, "Error in creating the user", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                                    reference1.setValue(groups).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete( Task<Void> task) {
-                                            if (task.isSuccessful()){
-                                                progressDialog.show();
-                                                Intent intent = new Intent(Register.this,QRscanner.class);
-                                                startActivity(intent);
-                                                finish();
-                                            }else {
+                                            } else {
                                                 Toast.makeText(Register.this, "Error in creating the user", Toast.LENGTH_SHORT).show();
                                             }
                                         }

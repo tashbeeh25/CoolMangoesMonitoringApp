@@ -1,11 +1,18 @@
 package com.example.coolmangoesmonitoringapp;
 
-import androidx.appcompat.app.AlertDialog;
-
+import static android.content.ContentValues.TAG;
 import static com.example.coolmangoesmonitoringapp.Login.email;
+
+
+import androidx.appcompat.app.AlertDialog;
+import static com.example.coolmangoesmonitoringapp.Login.users;
+import static com.example.coolmangoesmonitoringapp.Login.userID;
+import static com.example.coolmangoesmonitoringapp.QRscanner.code;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -44,12 +51,13 @@ public class Dashboard extends AppCompatActivity {
     private TextView userNamesTextView;
     ProgressBar progressBar;
     int counter = 0;
-   // private OkHttpClient client;
 
     String userAuthemail;
 
-    //Float tempInt;
+    TextView usersTxt;
+    String container;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,28 +68,40 @@ public class Dashboard extends AppCompatActivity {
         //userNamesTextView = findViewById(R.id.welcomeuser_txt);
 
         textView = findViewById(R.id.tempText);
+        usersTxt = findViewById(R.id.users);
+
+        //usersTxt.setText(users);
+
 
         //userNamesTextView.setText("Welcome to the dashboard");
 
-        Button temperature_button = (Button)findViewById(R.id.tempBtn);
-        Button logout_button = (Button)findViewById(R.id.logoutBtn);
-        Button chat_button = (Button)findViewById(R.id.chatBtn);
-        Button post_button = (Button)findViewById(R.id.postBtn);
-
+        Button temperature_button = (Button) findViewById(R.id.tempBtn);
+        Button logout_button = (Button) findViewById(R.id.logoutBtn);
+        Button chat_button = (Button) findViewById(R.id.chatBtn);
+        Button post_button = (Button) findViewById(R.id.postBtn);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button addContainer = (Button) findViewById(R.id.addContainer);
 
 
         // temperature alert
+        //usersTxt.setText(users);
 
+        showTempData();
 
-
-
-        userID();
-
+        /*
         if (userAuthemail == email){
             showTempData();
         }else{
-            Toast.makeText(Dashboard.this, "Unable to retrieve temp", Toast.LENGTH_SHORT).show();
-        }
+            Toast.makeText(Dashboard.this, "Unable to retrieve temperature", Toast.LENGTH_SHORT).show();
+        }*/
+
+        /*if(code == container) {
+            showTempData();
+
+        } else {
+            AlertDialog alertTemp = new AlertDialog.Builder(Dashboard.this).create();
+            alertTemp.setTitle("No temperature data available");
+            alertTemp.setMessage("Please add a device to see temperature data");
+        }*/
 
 
         temperature_button.setOnClickListener(new View.OnClickListener() {
@@ -116,8 +136,15 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-    }
+        addContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Dashboard.this, QRscanner.class);
+                startActivity(intent);
+            }
+        });
 
+    }
 
 
     private void userID() {
@@ -180,9 +207,7 @@ public class Dashboard extends AppCompatActivity {
                 }
             }
         });
-
     }
-
 
 
 
@@ -207,33 +232,37 @@ public class Dashboard extends AppCompatActivity {
                     String responseData = response.body().string();
                     try {
                         JSONObject json = new JSONObject(responseData);
-                        int id = json.getInt("id");
+                        //String container_id = json.getString("container_id");
                         String temperature = json.getString("temperature");
 
-                        String timestamp = json.getString("timestamp");
-                        String user_id = json.getString("user_id");
+                        //container = container_id;
+                        //userID1 = String.valueOf(id1);
+
+
+
+
 
                         Float temp = Float.parseFloat(temperature);
 
                         float tempo = temp * 5;
-                       // float temp = 20;
+                            // float temp = 20;
 
-                        // Set the target value that you want to reach
+                            // Set the target value that you want to reach
                         final Float targetValue = tempo; // Adjust this value to your desired target
 
-                            progressBar = (ProgressBar) findViewById(R.id.progressBar);
-                            final Timer t = new Timer();
-                            TimerTask tt = new TimerTask() {
-                                @Override
-                                public void run() {
-                                    counter++;
-                                    progressBar.setProgress(counter);
-                                    if (counter >= targetValue) {
-                                        t.cancel();
-                                    }
+                        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+                        final Timer t = new Timer();
+                        TimerTask tt = new TimerTask() {
+                            @Override
+                            public void run() {
+                                counter++;
+                                progressBar.setProgress(counter);
+                                if (counter >= targetValue) {
+                                    t.cancel();
                                 }
-                            };
-                            t.schedule(tt,0,100);
+                            }
+                        };
+                        t.schedule(tt, 0, 100);
 
 
                             // change color of progress
@@ -241,21 +270,21 @@ public class Dashboard extends AppCompatActivity {
                         int red = Color.parseColor("#FF0000");
 
 
-                        //String tempData = temperature.toString();
+                            //String tempData = temperature.toString();
 
-                        // Update UI elements with the extracted data
+                            // Update UI elements with the extracted data
                         runOnUiThread(() -> {
                             textView.setText(temperature + "°C");
 
                             Float tempInt = Float.parseFloat(temperature);
 
-                            //float tempInt = 20;
+                                //float tempInt = 20;
 
-                            if ( tempInt < 7.00) {
+                            if (tempInt < 7.00) {
                                 AlertDialog alertDialog = new AlertDialog.Builder(Dashboard.this).create();
                                 alertDialog.setTitle("Temperature is too low");
                                 alertDialog.setMessage("The current container temperature is too low. Please change the temperature to a higher setting ");
-                                //alertDialog.setIcon(R.drawable.welcome);
+                                    //alertDialog.setIcon(R.drawable.welcome);
 
                                 progressBar.setProgressTintList(ColorStateList.valueOf(red));
 
@@ -271,11 +300,11 @@ public class Dashboard extends AppCompatActivity {
                                 progressBar.setProgressTintList(ColorStateList.valueOf(red));
 
 
-                            } else if ( tempInt > 14.00 ){
+                            } else if (tempInt > 14.00) {
                                 AlertDialog alertDialog1 = new AlertDialog.Builder(Dashboard.this).create();
                                 alertDialog1.setTitle("Temperature is too high");
                                 alertDialog1.setMessage("The current container temperature is too high. Please change the temperature to a lower setting ");
-                                //alertDialog.setIcon(R.drawable.welcome);
+                                    //alertDialog.setIcon(R.drawable.welcome);
 
 
                                 alertDialog1.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
@@ -290,15 +319,16 @@ public class Dashboard extends AppCompatActivity {
                                 progressBar.setProgressTintList(ColorStateList.valueOf(red));
 
 
-                            }else{
+                            } else {
                                 textView.setTextColor(Color.GREEN);
                             }
-                            //tempInt = Float.parseFloat(temperature);
+                                //tempInt = Float.parseFloat(temperature);
 
-                            //textView.setText(tempData);
-                            // Update your UI elements with the extracted data
-                            // For example, update TextViews with id, temperature, and timestamp
+                                //textView.setText(tempData);
+                                // Update your UI elements with the extracted data
+                                // For example, update TextViews with id, temperature, and timestamp
                         });
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

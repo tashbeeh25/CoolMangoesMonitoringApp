@@ -1,8 +1,11 @@
 package com.example.coolmangoesmonitoringapp;
 
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,9 +24,13 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -31,16 +39,27 @@ import okhttp3.Response;
 
 public class Login extends AppCompatActivity {
 
+    public static String userID;
+
+
+    public static String users;
+
+
+
     public static String email;
+
+    String usern;
 
     EditText emailEditText, passwordEditText;
 
+    TextView regTxt;
     private Button loginButton;
     private OkHttpClient client;
     FirebaseAuth auth;
     String userPattern = "^(?=.*[A-Z])(?=.*\\d).{6,}$\n";
     android.app.ProgressDialog progressDialog;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,13 +83,22 @@ public class Login extends AppCompatActivity {
         emailEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginbtn);
+        regTxt = findViewById(R.id.reg_text);
+        usern = "mollym12";
 
 
+        regTxt.setOnClickListener(new View.OnClickListener (){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login.this, Register.class);
+                startActivity(intent);
+            }
+        });
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                email = emailEditText.getText().toString();
+                email= emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
 
@@ -99,10 +127,12 @@ public class Login extends AppCompatActivity {
                            // progressDialog.dismiss(); // Dismiss the progressDialog here
 
                             if (task.isSuccessful()){
-                                //performLogin(email, password);
+                                userID();
+                                //currentUserID();
+                                performLogin(usern,password);
 
                                 try {
-                                    Intent intent = new Intent(Login.this , Dashboard.class);
+                                    Intent intent = new Intent(Login.this , QRscanner.class);
                                     startActivity(intent);
                                     finish();
                                 }catch (Exception e){
@@ -145,9 +175,9 @@ public class Login extends AppCompatActivity {
         toast.show();
     }
 
-    public void performLogin(String email, String password) {
+    public void performLogin(String username, String password) {
         RequestBody requestBody = new FormBody.Builder()
-                .add("email", email)
+                .add("username", username)
                 .add("password", password)
                 .build();
 
@@ -160,33 +190,47 @@ public class Login extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    // Handle successful login
-                    String responseBody = response.body().string();
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject json = new JSONObject(responseData);
+                        String uname = json.getString("username");
 
 
-                    Log.d(responseBody, "body");
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showSuccessToast();
 
-                            Intent intent = new Intent(Login.this, Dashboard.class);
-                            startActivity(intent);
-                        }
-                    });
-                    // Parse the response if needed
+                        //Log.d(userID, "user id");
+
+                        //String temperature = json.getString("temperature");
+
+                        //String timestamp = json.getString("timestamp");
+
+                        //Float temp = Float.parseFloat(temperature);
+
+                        //float tempo = temp * 5;
+                        // float temp = 20;
+
+                        // Set the target value that you want to reach
+                        // final Float targetValue = tempo; // Adjust this value to your desired target
+
+                        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
+                        //final Timer t = new Timer();
+
+                        runOnUiThread(() -> {
+                            users = uname;
+
+                            Log.d(username, "user n");
+
+                            //tempInt = Float.parseFloat(temperature);
+
+                            //textView.setText(tempData);
+                            // Update your UI elements with the extracted data
+                            // For example, update TextViews with id, temperature, and timestamp
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 } else {
+                    // Handle error
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showFailedToast();
-                        }
-                    });
-
-                    Intent intent = new Intent(Login.this, Login.class);
-                    startActivity(intent);
-                    // Handle login failure
                 }
             }
 
@@ -197,6 +241,129 @@ public class Login extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void userID() {
+        OkHttpClient client1 = new OkHttpClient();
+
+        String apiUrl = "http://10.0.2.2:8000/api/latest-user/";
+
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .build();
+
+        client1.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject json = new JSONObject(responseData);
+                        int id = json.getInt("id");
+
+                        userID = String.valueOf(id);
+
+                        //Log.d(userID, "user id");
+
+                        //String temperature = json.getString("temperature");
+
+                        //String timestamp = json.getString("timestamp");
+
+                        //Float temp = Float.parseFloat(temperature);
+
+                        //float tempo = temp * 5;
+                        // float temp = 20;
+
+                        // Set the target value that you want to reach
+                        // final Float targetValue = tempo; // Adjust this value to your desired target
+
+                        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
+                        //final Timer t = new Timer();
+
+                        runOnUiThread(() -> {
+
+
+                            //tempInt = Float.parseFloat(temperature);
+
+                            //textView.setText(tempData);
+                            // Update your UI elements with the extracted data
+                            // For example, update TextViews with id, temperature, and timestamp
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // Handle error
+                }
+            }
+        });
+    }
+
+    private void currentUserID() {
+        OkHttpClient client2 = new OkHttpClient();
+
+        String apiUrl = "http://10.0.2.2:8000/api/get_user_details/";
+
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .build();
+
+        client2.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject json = new JSONObject(responseData);
+                        int id1 = json.getInt("id");
+
+
+                        userID = String.valueOf(id1);
+
+                        //Log.d(userID, "user id");
+
+                        //String temperature = json.getString("temperature");
+
+                        //String timestamp = json.getString("timestamp");
+
+                        //Float temp = Float.parseFloat(temperature);
+
+                        //float tempo = temp * 5;
+                        // float temp = 20;
+
+                        // Set the target value that you want to reach
+                        // final Float targetValue = tempo; // Adjust this value to your desired target
+
+                        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
+                        //final Timer t = new Timer();
+
+                        runOnUiThread(() -> {
+
+
+                            //tempInt = Float.parseFloat(temperature);
+
+                            //textView.setText(tempData);
+                            // Update your UI elements with the extracted data
+                            // For example, update TextViews with id, temperature, and timestamp
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // Handle error
+                }
+            }
+        });
     }
 
 }

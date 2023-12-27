@@ -3,7 +3,9 @@ package com.example.coolmangoesmonitoringapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,6 +43,9 @@ public class PostsDashboard extends AppCompatActivity {
         setContentView(R.layout.activity_posts_dashboard);
 
         create_group = findViewById(R.id.create_group);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button logout_button = (Button) findViewById(R.id.logoutBtn);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button chat_btn = (Button) findViewById(R.id.chatBtn);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button dash_button = (Button) findViewById(R.id.dashboardBtn);
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance();
@@ -51,6 +56,7 @@ public class PostsDashboard extends AppCompatActivity {
         listView = findViewById(R.id.groupRecyclerView);
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listofgroups);
         listView.setAdapter(arrayAdapter);
+        listView.setBackgroundColor(Color.GRAY);
 
         // Retrieve and display groups
         groupRef.addValueEventListener(new ValueEventListener() {
@@ -89,6 +95,30 @@ public class PostsDashboard extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PostsDashboard.this, NewGroup.class);
+                startActivity(intent);
+            }
+        });
+
+        logout_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostsDashboard.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        dash_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostsDashboard.this, Dashboard.class);
+                startActivity(intent);
+            }
+        });
+
+        chat_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostsDashboard.this, ChatUsers.class);
                 startActivity(intent);
             }
         });

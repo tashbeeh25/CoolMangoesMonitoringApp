@@ -3,6 +3,7 @@ package com.example.coolmangoesmonitoringapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -58,6 +59,12 @@ public class NewGroup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_group);
 
+
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button back_btn = (Button) findViewById(R.id.back_btn);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button logout_button = (Button) findViewById(R.id.logoutBtn);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button chat_btn = (Button) findViewById(R.id.chatBtn);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button dash_button = (Button) findViewById(R.id.dashboardBtn);
+
         create_group = (Button) findViewById(R.id.create_group_btn);
 
         FirebaseApp.initializeApp(this);
@@ -75,6 +82,36 @@ public class NewGroup extends AppCompatActivity {
 
         DatabaseReference reference = database.getReference().child("group");
 
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(NewGroup.this, PostsDashboard.class);
+                startActivity(intent);
+            }
+        });
+        logout_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(NewGroup.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        dash_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(NewGroup.this, Dashboard.class);
+                startActivity(intent);
+            }
+        });
+
+        chat_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(NewGroup.this, ChatUsers.class);
+                startActivity(intent);
+            }
+        });
 
         create_group.setOnClickListener(new View.OnClickListener() {
             @Override

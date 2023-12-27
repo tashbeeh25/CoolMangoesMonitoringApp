@@ -7,28 +7,19 @@
     android:background="@drawable/background"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="148dp"
-        android:layout_height="80dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.167"
-        app:srcCompat="@drawable/logo_no_back" />
-
     <TextView
+        android:id="@+id/signin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/signin"
-        android:text="Sign in"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:text="Sign In"
         android:textColor="@color/white"
         android:textSize="35dp"
-        android:textStyle="bold"
-        android:layout_margin="50dp"
-        android:gravity="center"/>
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/username"
@@ -42,6 +33,7 @@
         android:background="#30ffffff"
         android:drawablePadding="20dp"
         android:hint="Email"
+        android:text="mollym12@yahoo.com"
         android:padding="20dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white" />
@@ -58,6 +50,7 @@
         android:background="#30ffffff"
         android:drawablePadding="20dp"
         android:hint="Password"
+        android:text="poo3Iqua"
         android:inputType="textPassword"
         android:padding="20dp"
         android:textColor="@color/white"
@@ -66,6 +59,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/loginbtn"
         android:layout_width="wrap_content"
+        android:textColor="@color/white"
         android:layout_height="wrap_content"
         android:layout_below="@id/password"
         android:layout_centerHorizontal="true"
@@ -78,7 +72,7 @@
         app:backgroundTint="#2E0606" />
 
     <TextView
-        android:id="@+id/forgotpass"
+        android:id="@+id/reg_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/loginbtn"
@@ -87,7 +81,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:text="Forgot password?"
+        android:text="Don't have an account? Register"
         android:textColor="@color/white" />
 
 </RelativeLayout>

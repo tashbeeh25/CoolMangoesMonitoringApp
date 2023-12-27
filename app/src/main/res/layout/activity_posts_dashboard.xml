@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".PostsDashboard">
     <View
         android:id="@+id/top_view"
@@ -62,6 +63,7 @@
         android:id="@+id/create_group"
         android:layout_width="235dp"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
@@ -71,5 +73,70 @@
         android:layout_marginBottom="161dp"
         android:backgroundTint="@color/black"
         android:text="Create new group" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="672dp"
+        android:layout_marginBottom="3dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"></androidx.appcompat.widget.Toolbar>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/logoutBtn"
+        android:layout_width="108dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="292dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="672dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/purple_500"
+        android:text="Logout"
+        app:backgroundTint="#2E0606" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/dashboardBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="52dp"
+        android:layout_alignBottom="@+id/toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="155dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="674dp"
+        android:layout_marginEnd="154dp"
+        android:layout_marginBottom="2dp"
+        android:backgroundTint="@color/purple_500"
+        android:text="Dashboard"
+        android:textSize="10dp"
+        app:backgroundTint="#2E0606" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/chatBtn"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@+id/toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="674dp"
+        android:layout_marginEnd="287dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/purple_500"
+        android:text="Chat"
+        android:textColor="@color/white"
+        android:textSize="13dp"
+        app:backgroundTint="#2E0606" />
 
 </RelativeLayout>

@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".Dashboard">
+
+
 
 
     <View
@@ -12,6 +15,42 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@drawable/bg_view" />
+
+    <TextView
+        android:id="@+id/users"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="97dp"
+        android:layout_marginTop="223dp"
+        android:layout_marginEnd="138dp"
+        android:layout_marginBottom="29dp"
+        android:gravity="center"
+        android:text="Welcome, MollyM12"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/users2"
+        android:layout_width="230dp"
+        android:layout_height="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="78dp"
+        android:layout_marginTop="246dp"
+        android:layout_marginEnd="103dp"
+        android:layout_marginBottom="29dp"
+        android:gravity="center"
+        android:text="You are connected to Container"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/dashboard_txt"
@@ -34,7 +73,8 @@
         android:layout_height="250dp"
         android:layout_below="@+id/top_view"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="90dp"
+        android:background="@color/white"
         android:layout_marginRight="25dp"
         android:columnCount="2"
         android:rowCount="3">
@@ -55,6 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:background="@color/white"
                 android:orientation="vertical">
 
                 <ImageView
@@ -66,12 +107,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Temperature Overtime" />
+                    android:text="Temperature Overtime"
+                    android:textColor="@color/black"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/tempBtn"
                     android:layout_width="145dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:layout_centerHorizontal="true"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
@@ -91,14 +134,20 @@
             android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
+            android:background="@color/white"
             android:layout_margin="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
             app:cardCornerRadius="15dp"
             app:cardElevation="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="94dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -119,52 +168,52 @@
                     android:textStyle="bold" />
 
 
-
             </LinearLayout>
 
+
             <TextView
                 android:layout_width="55dp"
                 android:layout_height="20dp"
                 android:layout_gravity="right"
-                android:layout_marginRight="0dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="190dp"
-                android:text= "0°"
+                android:layout_marginRight="0dp"
+                android:text="0°"
                 android:textColor="#FF0000"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <TextView
                 android:layout_width="55dp"
                 android:layout_height="20dp"
                 android:layout_gravity="right"
-                android:layout_marginRight="0dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="100dp"
-                android:text= "20°"
+                android:layout_marginRight="0dp"
+                android:text="20°"
                 android:textColor="#FF0000"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <TextView
                 android:layout_width="55dp"
                 android:layout_height="20dp"
                 android:layout_gravity="right"
-                android:layout_marginRight="0dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="160dp"
-                android:text= "7°"
+                android:layout_marginRight="0dp"
+                android:text="7°"
                 android:textColor="#00FF00"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <TextView
                 android:layout_width="55dp"
                 android:layout_height="20dp"
                 android:layout_gravity="right"
-                android:layout_marginRight="0dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="130dp"
-                android:text= "14°"
+                android:layout_marginRight="0dp"
+                android:text="14°"
                 android:textColor="#00FF00"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -181,8 +230,7 @@
                 android:layout_height="90dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="40dp"
-                android:progressTint="#00FF00"
-                />
+                android:progressTint="#00FF00" />
 
 
         </androidx.cardview.widget.CardView>
@@ -191,25 +239,45 @@
     </GridLayout>
 
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addContainer"
+        android:layout_width="203dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="125dp"
+        android:backgroundTint="@color/black"
+        android:text="Scan and add Container"
+        app:backgroundTint="#2E0606" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="672dp"
+        android:layout_marginBottom="3dp"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"></androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/logoutBtn"
-        android:layout_width="102dp"
+        android:layout_width="108dp"
+        android:textColor="@color/white"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/toolbar"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="292dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="17dp"
+        android:layout_marginTop="672dp"
+        android:layout_marginEnd="11dp"
         android:layout_marginBottom="4dp"
         android:backgroundTint="@color/purple_500"
         android:text="Logout"
@@ -217,34 +285,37 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/chatBtn"
-        android:layout_width="102dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textColor="@color/white"
+        android:layout_height="52dp"
         android:layout_alignBottom="@+id/toolbar"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="179dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="130dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginStart="155dp"
+        android:layout_marginTop="674dp"
+        android:layout_marginEnd="154dp"
+        android:layout_marginBottom="2dp"
         android:backgroundTint="@color/purple_500"
         android:text="Chat"
         app:backgroundTint="#2E0606" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/postBtn"
-        android:layout_width="102dp"
-        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_alignBottom="@+id/toolbar"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="78dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="240dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="674dp"
+        android:layout_marginEnd="287dp"
         android:layout_marginBottom="4dp"
         android:backgroundTint="@color/purple_500"
-        android:text="Post"
+        android:text="Group Chat"
+        android:textSize="12dp"
         app:backgroundTint="#2E0606" />
 
 

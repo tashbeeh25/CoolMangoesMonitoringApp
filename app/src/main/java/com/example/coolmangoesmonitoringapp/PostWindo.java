@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +72,8 @@ public class PostWindo extends AppCompatActivity {
     //public  static String reciverIImg;
     CardView sendbtn, imageBtn, recordBtn, pauseBtn;
 
+    Button back_btn;
+
     TextView groupName, disployTextMessage;
     EditText textmsg;
 
@@ -107,6 +110,7 @@ public class PostWindo extends AppCompatActivity {
 
         //messagesArrayList = new ArrayList<>();
 
+        back_btn = findViewById(R.id.back_btn);
         groupName = findViewById(R.id.group_name);
         sendbtn = findViewById(R.id.sendbtnn);
         imageBtn = findViewById(R.id.imageBtn);
@@ -122,6 +126,13 @@ public class PostWindo extends AppCompatActivity {
         groupName.setText(currentGroupName);
 
         GetUserInfo();
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostWindo.this, PostsDashboard.class);
+                startActivity(intent);
+            }
+        });
 
         sendbtn.setOnClickListener(new View.OnClickListener() {
             @Override

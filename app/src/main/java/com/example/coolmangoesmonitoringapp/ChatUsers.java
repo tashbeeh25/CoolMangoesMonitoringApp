@@ -8,9 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -158,6 +161,9 @@ public class ChatUsers extends AppCompatActivity {
         database=FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
+        Button logout_button = (Button) findViewById(R.id.logoutBtn);
+        Button post_button = (Button) findViewById(R.id.postBtn);
+        Button dash_button = (Button) findViewById(R.id.dashboardBtn);
 
         DatabaseReference reference = database.getReference().child("user");
 
@@ -236,6 +242,31 @@ public class ChatUsers extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this,login.class);
             startActivity(intent);
         }*/
+
+        logout_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatUsers.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        dash_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatUsers.this, Dashboard.class);
+                startActivity(intent);
+            }
+        });
+
+        post_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatUsers.this, PostsDashboard.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 }

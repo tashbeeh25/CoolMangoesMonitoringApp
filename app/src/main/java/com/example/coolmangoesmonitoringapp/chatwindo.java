@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,6 +57,7 @@ public class chatwindo extends AppCompatActivity {
     private static final int REQUEST_PERMISSION_CODE = 100;
 
 
+    Button backBtn;
 
     String reciverimg, reciverUid,reciverName,SenderUID;
     CircleImageView profile;
@@ -93,6 +95,7 @@ public class chatwindo extends AppCompatActivity {
 
         messagesArrayList = new ArrayList<>();
 
+        backBtn = findViewById(R.id.back_btn);
         sendbtn = findViewById(R.id.sendbtnn);
         imageBtn = findViewById(R.id.imageBtn);
         recordBtn = findViewById(R.id.recordBtn);
@@ -153,6 +156,13 @@ public class chatwindo extends AppCompatActivity {
             }
         });
 
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(chatwindo.this, ChatUsers.class);
+                startActivity(intent);
+            }
+        });
 
         recordBtn.setOnClickListener(view -> {
             // Check for permission before starting recording

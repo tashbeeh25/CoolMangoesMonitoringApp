@@ -1,5 +1,9 @@
 package com.example.coolmangoesmonitoringapp;
 
+import static com.example.coolmangoesmonitoringapp.Login.users;
+import static com.example.coolmangoesmonitoringapp.Login.userID;
+import static com.example.coolmangoesmonitoringapp.Login.email;
+
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -12,6 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -62,18 +67,20 @@ import okhttp3.Response;
 
 public class QRscanner extends AppCompatActivity {
 
-    //int userID;
-    int userID;
+    public static String code;
+
+    String NEWuserID;
 
     private OkHttpClient client;
 
     private OkHttpClient client1;
 
+    String rawValues;
 
     // UI Views
     private MaterialButton galleryBtn;
     private ImageView imageIv;
-    private MaterialButton scanBtn;
+    private MaterialButton scanBtn, scanLaterBtn;
     private TextView resultTv;
 
     // To handle the result of camera/gallery permissions in onRequestPermissionResults
@@ -93,6 +100,7 @@ public class QRscanner extends AppCompatActivity {
     private static final String TAG ="MAIN_TAG";
     private View cameraBtn;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +115,7 @@ public class QRscanner extends AppCompatActivity {
         galleryBtn = findViewById(R.id.galleryBtn);
         imageIv = findViewById(R.id.imageIv);
         scanBtn = findViewById(R.id.scanBtn);
+        scanLaterBtn = findViewById(R.id.later);
         resultTv = findViewById(R.id.resultTv);
 
         // init the arrays of permissions required to pick image from camera/gallery
@@ -147,7 +156,6 @@ public class QRscanner extends AppCompatActivity {
                 if(checkStoragePermission()){
                     //permission required for camera already granted, launch camera intent
                     pickImageGallery();
-                    userID();
 
 
                 }else{
@@ -157,10 +165,27 @@ public class QRscanner extends AppCompatActivity {
             }
         });
 
+        scanLaterBtn.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(QRscanner.this, Dashboard.class);
+                startActivity(intent);
+
+
+            }
+        });
+
         // Handle scanBtn click, scan the barcode/QR code from image picked from camera/gallery
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //Log.d("THIS IS USER ID", userID );
+               // Log.d("THIS IS USER email", email );
+
                 if (imageUri == null){
 
                     // Image is not picked yet
@@ -168,16 +193,18 @@ public class QRscanner extends AppCompatActivity {
                     Intent intent = new Intent(QRscanner.this, QRscanner.class);
                     startActivity(intent);
 
-
                 }else{
                     // Image was picked, start scanning barcode/QR code
                     detectResultFromImage();
                     scanBtn.setEnabled( false );
-                    //Toast.makeText(QScanner.this, "Pick image first...", Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(QRscanner.this, Dashboard.class);
-                    startActivity(intent);
-
+                    if(rawValues == null || rawValues.isEmpty()) {
+                        Toast.makeText(QRscanner.this, "The QR Code is invalid. Please try a valid QR Code", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(QRscanner.this, QRscanner.class);
+                        startActivity(intent);
+                    }else {
+                        Intent intent = new Intent(QRscanner.this, Dashboard.class);
+                        startActivity(intent);
+                    }
                 }
 
             }
@@ -219,15 +246,20 @@ public class QRscanner extends AppCompatActivity {
             Point[] corners = barcode.getCornerPoints();
 
 
+
             // Raw info scanned from teh Barcode/QR code
-            String rawValues = barcode.getRawValue();
+            rawValues = barcode.getRawValue();
 
 
             Log.d(String.valueOf(userID), "LATEST ID");
 
-            qrCodeScanning(rawValues, userID);
+
+            qrCodeScanning(rawValues, Integer.parseInt(userID));
 
             Log.d(TAG, "THIS IS QR CODE");
+
+
+
 
             Log.d(TAG, "extractBarCodeQRCodeInfo: rawValue: "+ rawValues);
 
@@ -459,11 +491,15 @@ public class QRscanner extends AppCompatActivity {
             break;
         }
     }
-    private void qrCodeScanning(String qr_code, int userID) {
-        if (userID != 0){
+
+
+    private void qrCodeScanning(String qr_code, int userID1) {
+
+
+        if (userID1 != 0){
             RequestBody requestBody = new FormBody.Builder()
                     .add("qr_code", qr_code)
-                    .add("user_id", String.valueOf(userID))
+                    .add("user_id", String.valueOf(userID1))
                     .build();
 
 
@@ -479,10 +515,14 @@ public class QRscanner extends AppCompatActivity {
                     // Handle successful login
                     String responseBody = response.body().string();
 
+
+                    code = qr_code;
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             showSuccessToast();
+
+
 
                             Intent intent = new Intent(QRscanner.this, Dashboard.class);
                             startActivity(intent);
@@ -492,9 +532,11 @@ public class QRscanner extends AppCompatActivity {
                 } else {
 
                     runOnUiThread(new Runnable() {
+
                         @Override
                         public void run() {
                             showFailedToast();
+
                         }
                     });
 
@@ -503,6 +545,8 @@ public class QRscanner extends AppCompatActivity {
                     // Handle login failure
                 }
             }
+
+
 
             @Override
             public void onFailure(Call call, IOException e) {
@@ -518,68 +562,6 @@ public class QRscanner extends AppCompatActivity {
 
     }
 
-
-    private void userID() {
-        client1 = new OkHttpClient();
-
-        String apiUrl = "http://10.0.2.2:8000/api/latest-user/";
-
-        Request request = new Request.Builder()
-                .url(apiUrl)
-                .build();
-
-        client1.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String responseData = response.body().string();
-                    try {
-                        JSONObject json = new JSONObject(responseData);
-                        int ID = json.getInt("id");
-
-
-                        //Log.d(userID, "user id");
-
-                        //String temperature = json.getString("temperature");
-
-                        //String timestamp = json.getString("timestamp");
-
-                        //Float temp = Float.parseFloat(temperature);
-
-                        //float tempo = temp * 5;
-                        // float temp = 20;
-
-                        // Set the target value that you want to reach
-                       // final Float targetValue = tempo; // Adjust this value to your desired target
-
-                        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
-                        //final Timer t = new Timer();
-
-                        runOnUiThread(() -> {
-
-
-                            userID = ID;
-                            //tempInt = Float.parseFloat(temperature);
-
-                            //textView.setText(tempData);
-                            // Update your UI elements with the extracted data
-                            // For example, update TextViews with id, temperature, and timestamp
-                        });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    // Handle error
-                }
-            }
-        });
-
-    }
 
     private void showSuccessToast() {
         // Create a Toast instance
