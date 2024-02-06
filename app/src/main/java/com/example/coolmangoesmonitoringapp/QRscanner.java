@@ -1,44 +1,30 @@
 package com.example.coolmangoesmonitoringapp;
-
-import static com.example.coolmangoesmonitoringapp.Login.users;
-import static com.example.coolmangoesmonitoringapp.Login.userID;
 import static com.example.coolmangoesmonitoringapp.Login.email;
-
-
+import static com.example.coolmangoesmonitoringapp.Login.userId;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -48,15 +34,10 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -69,18 +50,25 @@ public class QRscanner extends AppCompatActivity {
 
     public static String code;
 
-    String NEWuserID;
+    public static String codeVer;
+
+    public static String usern;
+
+
+
+    public static String verifemail;
+
 
     private OkHttpClient client;
 
-    private OkHttpClient client1;
 
-    String rawValues;
+    String userID;
+    public static String rawValues;
 
     // UI Views
     private MaterialButton galleryBtn;
     private ImageView imageIv;
-    private MaterialButton scanBtn, scanLaterBtn;
+    private MaterialButton scanBtn, scanLaterBtn, setting_button, home_button, logout_button;
     private TextView resultTv;
 
     // To handle the result of camera/gallery permissions in onRequestPermissionResults
@@ -108,6 +96,10 @@ public class QRscanner extends AppCompatActivity {
 
         client = new OkHttpClient();
 
+        currentUser();
+        getcontainercode();
+
+        Log.d(TAG, "code  " + codeVer);
 
 
         // init UI views
@@ -115,8 +107,13 @@ public class QRscanner extends AppCompatActivity {
         galleryBtn = findViewById(R.id.galleryBtn);
         imageIv = findViewById(R.id.imageIv);
         scanBtn = findViewById(R.id.scanBtn);
-        scanLaterBtn = findViewById(R.id.later);
-        resultTv = findViewById(R.id.resultTv);
+        scanLaterBtn = findViewById(R.id.scanLaterBtn);
+        logout_button = findViewById(R.id.loginbtn);
+        home_button = findViewById(R.id.dashboardBtn);
+        setting_button = findViewById(R.id.setting);
+
+
+
 
         // init the arrays of permissions required to pick image from camera/gallery
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}; // Image from camera: Camera and WRITE_EXTERNAL_STORAGE
@@ -165,18 +162,6 @@ public class QRscanner extends AppCompatActivity {
             }
         });
 
-        scanLaterBtn.setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(QRscanner.this, Dashboard.class);
-                startActivity(intent);
-
-
-            }
-        });
 
         // Handle scanBtn click, scan the barcode/QR code from image picked from camera/gallery
         scanBtn.setOnClickListener(new View.OnClickListener() {
@@ -207,6 +192,35 @@ public class QRscanner extends AppCompatActivity {
                     }
                 }
 
+            }
+        });
+
+        scanLaterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(QRscanner.this, Dashboard.class);
+                startActivity(intent);
+            }
+        });
+        logout_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(QRscanner.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        home_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(QRscanner.this, Dashboard.class);
+                startActivity(intent);
+            }
+        });
+        setting_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(QRscanner.this, Setting.class);
+                startActivity(intent);
             }
         });
     }
@@ -251,9 +265,6 @@ public class QRscanner extends AppCompatActivity {
             rawValues = barcode.getRawValue();
 
 
-            Log.d(String.valueOf(userID), "LATEST ID");
-
-
             qrCodeScanning(rawValues, Integer.parseInt(userID));
 
             Log.d(TAG, "THIS IS QR CODE");
@@ -262,6 +273,8 @@ public class QRscanner extends AppCompatActivity {
 
 
             Log.d(TAG, "extractBarCodeQRCodeInfo: rawValue: "+ rawValues);
+            Log.d(TAG, "userID: "+ userID);
+
 
 
 
@@ -504,7 +517,7 @@ public class QRscanner extends AppCompatActivity {
 
 
         Request request = new Request.Builder()
-                .url("http://10.0.2.2:8000/api/create-container/")
+                .url("https://api2.charlie-iot.com/api/create-container/")
                 .post(requestBody)
                 .build();
 
@@ -517,6 +530,8 @@ public class QRscanner extends AppCompatActivity {
 
 
                     code = qr_code;
+
+
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -583,6 +598,97 @@ public class QRscanner extends AppCompatActivity {
 
         // Show the toast
         toast.show();
+    }
+
+
+
+    private void currentUser() {
+        OkHttpClient client2 = new OkHttpClient();
+
+        String apiUrl = "https://api2.charlie-iot.com/api/get-user-by-email/" + email;
+
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .build();
+
+        client2.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject json = new JSONObject(responseData);
+                        int id1 = json.getInt("id");
+                        String name = json.getString("username");
+                        String emaill = json.getString("email");
+
+                        userID = String.valueOf(id1);
+                        usern = name;
+                        verifemail = emaill;
+
+
+
+                        runOnUiThread(() -> {
+
+
+
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // Handle error
+                }
+            }
+        });
+    }
+
+    private void getcontainercode() {
+        OkHttpClient client2 = new OkHttpClient();
+
+        String apiUrl = "https://api2.charlie-iot.com/api/get-qr-code-by-user-id/" + userId;
+
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .build();
+
+        client2.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject json = new JSONObject(responseData);
+                        String qrCode = json.getString("qr_code");
+
+                        codeVer = qrCode;
+
+
+
+                        runOnUiThread(() -> {
+
+
+
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // Handle error
+                }
+
+            }
+        });
     }
 }
 

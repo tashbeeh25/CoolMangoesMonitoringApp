@@ -1,5 +1,6 @@
 package com.example.coolmangoesmonitoringapp;
 
+import static android.content.ContentValues.TAG;
 import static com.example.coolmangoesmonitoringapp.NewGroup.name;
 
 import android.annotation.SuppressLint;
@@ -11,8 +12,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +43,8 @@ import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -47,8 +53,10 @@ import okhttp3.Response;
 
 public class Register extends AppCompatActivity {
 
-    EditText first_name, last_name, username, email, password;
-    private static final String API_URL = "http://10.0.2.2:8000/api/register/";
+    EditText first_name, last_name, username, email, password, occupation, phone, repassword;
+    Spinner age, gender;
+    String userId;
+    private static final String API_URL = "https://api2.charlie-iot.com/api/register/";
     CircleImageView profile_img;
     Uri imageURI;
     String imageUri;
@@ -58,6 +66,7 @@ public class Register extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     TextView log_txt;
+    String ageSelectedItem, genderSelectedItem;
 
     Button register;
 
@@ -69,7 +78,6 @@ public class Register extends AppCompatActivity {
 
         FirebaseApp.initializeApp(this);
 
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Establishing The Account");
         progressDialog.setCancelable(false);
@@ -77,13 +85,17 @@ public class Register extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
-
-        profile_img = findViewById(R.id.profile); // Replace with the actual ID from your layout XML
+        age = findViewById(R.id.age);
+        gender = findViewById(R.id.gender);
+        profile_img = findViewById(R.id.profile);
         register = (Button) findViewById(R.id.reg_btn);
         first_name = findViewById(R.id.fname);
         last_name = findViewById(R.id.lname);
         username = findViewById(R.id.username);
         email = findViewById(R.id.email);
+        phone = findViewById(R.id.phone);
+        occupation = findViewById(R.id.occupation);
+        repassword = findViewById(R.id.repassword);
         password = findViewById(R.id.password);
         log_txt = findViewById(R.id.log_text);
 
@@ -94,6 +106,54 @@ public class Register extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        String[] ageItems = {"Age", "range: 18-24", "range: 25-34", "range: 35-44", "range: 45-54", "range: 55-64", "range: over 60"};
+
+        // Create an ArrayAdapter and set it on the Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ageItems);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        age.setAdapter(adapter);
+
+        age.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Get the selected item
+                ageSelectedItem = ageItems[position];
+
+                // Do something with the selected item, such as displaying it in a Toast
+                Toast.makeText(Register.this, "Selected Item: " + ageSelectedItem, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Do nothing here if nothing is selected
+            }
+        });
+
+
+        String[] genderItems = {"Gender", "Male", "Female"};
+
+        // Create an ArrayAdapter and set it on the Spinner
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, genderItems);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        gender.setAdapter(adapter2);
+
+        gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Get the selected item
+                genderSelectedItem = genderItems[position];
+
+                // Do something with the selected item, such as displaying it in a Toast
+                Toast.makeText(Register.this, "Selected Item: " + genderSelectedItem, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Do nothing here if nothing is selected
+            }
+        });
+
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,24 +166,36 @@ public class Register extends AppCompatActivity {
                 String usern = username.getText().toString();
                 String emaill = email.getText().toString();
                 String passwd = password.getText().toString();
+                String repasswd = repassword.getText().toString();
+                String phonee = phone.getText().toString();
+                String occup = occupation.getText().toString();
+                String ageSelected = ageSelectedItem;
+                String genderSelected = genderSelectedItem;
+
+
                 String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 String status = "Hey I am a new USER";
 
-                makeRegistrationRequest(fn, ln, usern, emaill, passwd);
 
                 if (TextUtils.isEmpty(fn) || (TextUtils.isEmpty(ln)) ||
                         (TextUtils.isEmpty(usern)) || (TextUtils.isEmpty(emaill)) ||
                         (TextUtils.isEmpty(passwd))) {
                     Toast.makeText(Register.this, "Please enter a valid information", Toast.LENGTH_SHORT).show();
 
-                }else if(!emaill.matches(emailPattern)){
-                    email.setError("Type a valid email");
+
+                }
+                else if(!passwd.matches(repasswd)) {
+                    email.setError("The password do not match");
+
                 }else if(passwd.length()<6){
                     password.setError("Password must be 6 characters or more");
+
                 }else{
                     auth.createUserWithEmailAndPassword(emaill, passwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete( Task<AuthResult> task) {
+                            makeRegistrationRequest(fn, ln, usern, emaill, passwd, phonee, occup,  ageSelected, genderSelected);
+
                             if (task.isSuccessful()) {
                                 String id = task.getResult().getUser().getUid();
 
@@ -152,7 +224,7 @@ public class Register extends AppCompatActivity {
                                                             public void onComplete( Task<Void> task) {
                                                                 if (task.isSuccessful()){
                                                                     progressDialog.show();
-                                                                    Intent intent = new Intent(Register.this,QRscanner.class);
+                                                                    Intent intent = new Intent(Register.this,Login.class);
                                                                     startActivity(intent);
                                                                     finish();
                                                                 }else {
@@ -178,7 +250,7 @@ public class Register extends AppCompatActivity {
                                         public void onComplete(Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 progressDialog.show();
-                                                Intent intent = new Intent(Register.this, QRscanner.class);
+                                                Intent intent = new Intent(Register.this, Login.class);
                                                 startActivity(intent);
                                                 finish();
                                             } else {
@@ -208,10 +280,9 @@ public class Register extends AppCompatActivity {
         });
 
     }
-
     private void showSuccessToast() {
         // Create a Toast instance
-        Toast toast = Toast.makeText(this, "Successfully Registered", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(this, "Successfully Registered. Please login", Toast.LENGTH_SHORT);
 
         // You can customize the position of the toast
         toast.setGravity(Gravity.CENTER, 0, 0);
@@ -231,17 +302,30 @@ public class Register extends AppCompatActivity {
         toast.show();
     }
 
-    private void makeRegistrationRequest(String fn,String ln, String usern, String emaill, String passwd) {
+    private void makeRegistrationRequest(String fn, String ln, String usern, String emaill, String passwd, String age, String occup, String phonee, String gender) {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
         JSONObject jsonBody = new JSONObject();
+        JSONObject profileObject = new JSONObject();
+
         try {
+            // Adding user information to the main JSON object
             jsonBody.put("username", usern);
             jsonBody.put("first_name", fn);
             jsonBody.put("last_name", ln);
             jsonBody.put("email", emaill);
             jsonBody.put("password", passwd);
+
+            // Adding profile information to the profile JSON object
+            profileObject.put("age", age);
+            profileObject.put("gender", gender);
+            profileObject.put("phone", phonee);
+            profileObject.put("occupation", occup);
+
+            // Adding the profile JSON object to the main JSON object
+            jsonBody.put("profile", profileObject);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -271,7 +355,7 @@ public class Register extends AppCompatActivity {
                         public void run() {
                             showSuccessToast();
 
-                            Intent intent = new Intent(Register.this, QRscanner.class);
+                            Intent intent = new Intent(Register.this, Login.class);
                             startActivity(intent);
                         }
                     });
@@ -286,7 +370,7 @@ public class Register extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            showFailedToast();
+                            //showFailedToast();
 
                         }
 

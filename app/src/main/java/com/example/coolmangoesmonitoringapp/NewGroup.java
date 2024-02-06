@@ -46,7 +46,7 @@ public class NewGroup extends AppCompatActivity {
     public  static String name;
 
     EditText group_name;
-    private static final String API_URL = "http://10.0.2.2:8000/api/create-group/";
+    private static final String API_URL = "https://api2.charlie-iot.com/api/create-group/";
 
     FirebaseAuth auth;
     FirebaseDatabase database;

@@ -13,7 +13,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -23,16 +22,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoolMangoesMonitoringApp">
-
+        <activity
+            android:name=".ShowInfo"
+            android:exported="false" />
+        <activity
+            android:name=".ChatsDashboard"
+            android:exported="false" />
+        <activity
+            android:name=".ChangeDetails"
+            android:exported="false" />
+        <activity
+            android:name=".Profile"
+            android:exported="false" />
+        <activity
+            android:name=".Setting"
+            android:exported="false" />
+        <activity
+            android:name=".Containers"
+            android:exported="false" />
         <activity
             android:name=".NewGroup"
             android:exported="false" />
         <activity
             android:name=".PostsDashboard"
             android:exported="false" />
-        <activity
-            android:name=".Groups">
-        </activity>
+        <activity android:name=".Groups" />
         <activity
             android:name=".PostWindo"
             android:exported="false" />

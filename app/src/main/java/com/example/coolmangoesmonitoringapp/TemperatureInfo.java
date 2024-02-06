@@ -1,9 +1,16 @@
 package com.example.coolmangoesmonitoringapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import static com.example.coolmangoesmonitoringapp.Containers.selectedQrCode;
+import static com.example.coolmangoesmonitoringapp.Dashboard.selectedValue;
 
+
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -44,6 +51,10 @@ public class TemperatureInfo extends AppCompatActivity {
         setContentView(R.layout.activity_temperature_info);
 
 
+        Button logout_button = (Button) findViewById(R.id.logoutBtn);
+        Button setting_button = (Button) findViewById(R.id.setting);
+        Button home = (Button) findViewById(R.id.dashboardBtn);
+
         lineChart = findViewById(R.id.chart);
 
         Description description = new Description();
@@ -67,24 +78,62 @@ public class TemperatureInfo extends AppCompatActivity {
         yAxis.setAxisLineColor(Color.BLACK);
         yAxis.setLabelCount(10);
 
+
         //List<Entry> entries1 = new ArrayList<>();
         //entries1.add((Entry) new Entry(0, 10f));
         //entries1.add((Entry) new Entry(1, 8f));
         //entries1.add((Entry) new Entry(2, 34f));
         //entries1.add((Entry) new Entry(3, 15f));
 
+        //Log.d("selectedqr" , selectedQrCode);
+
+        //selectedValue = selectedQrCode;
         showTempGraph();
+
+        logout_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TemperatureInfo.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TemperatureInfo.this, Dashboard.class);
+                startActivity(intent);
+            }
+        });
+
+        logout_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TemperatureInfo.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        setting_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TemperatureInfo.this, Setting.class);
+                startActivity(intent);
+            }
+        });
 
 
     }
+
 
 
     private void showTempGraph() {
         OkHttpClient client = new OkHttpClient();
 
 
+        String apiUrl = "https://api2.charlie-iot.com/api/temperature-list/" + selectedQrCode;
 
-        String apiUrl = "http://10.0.2.2:8000/api/temperature-readings/";
+        //String apiUrl = "https://api2.charlie-iot.com/api/temperature-list/" + selectedQrCode;
 
         Request request = new Request.Builder()
                 .url(apiUrl)

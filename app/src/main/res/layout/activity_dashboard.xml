@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,50 +8,12 @@
     android:background="@color/white"
     tools:context=".Dashboard">
 
-
-
-
     <View
         android:id="@+id/top_view"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@drawable/bg_view" />
-
-    <TextView
-        android:id="@+id/users"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="97dp"
-        android:layout_marginTop="223dp"
-        android:layout_marginEnd="138dp"
-        android:layout_marginBottom="29dp"
-        android:gravity="center"
-        android:text="Welcome, MollyM12"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/users2"
-        android:layout_width="230dp"
-        android:layout_height="20dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="78dp"
-        android:layout_marginTop="246dp"
-        android:layout_marginEnd="103dp"
-        android:layout_marginBottom="29dp"
-        android:gravity="center"
-        android:text="You are connected to Container"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:background="@drawable/bg_view"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/dashboard_txt"
@@ -59,264 +22,515 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="117dp"
-        android:layout_marginTop="78dp"
-        android:layout_marginEnd="118dp"
-        android:layout_marginBottom="29dp"
-        android:text="Dashboard"
+        android:layout_marginBottom="60dp"
+        android:text="Home"
         android:textColor="@color/white"
+        android:textAlignment="center"
         android:textSize="36sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/top_view"
+        app:layout_constraintEnd_toEndOf="@+id/top_view"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/top_view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <GridLayout
-        android:layout_width="354dp"
-        android:layout_height="250dp"
-        android:layout_below="@+id/top_view"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="90dp"
-        android:background="@color/white"
-        android:layout_marginRight="25dp"
-        android:columnCount="2"
-        android:rowCount="3">
+    <ScrollView
+        android:layout_width="389dp"
+        android:layout_height="548dp"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayoutBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_view"
+        app:layout_constraintVertical_bias="0.336">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="148dp"
-            android:layout_height="150dp"
-            android:layout_row="1"
-            android:layout_rowWeight="1"
-            android:layout_column="0"
-            android:layout_columnWeight="1"
-            android:layout_margin="12dp"
-            app:cardCornerRadius="15dp"
-            app:cardElevation="12dp">
+        <LinearLayout
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Your GridLayout or other views go here -->
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <TextView
+                android:id="@+id/users"
+                android:layout_width="406dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="4dp"
                 android:gravity="center"
-                android:background="@color/white"
-                android:orientation="vertical">
+                android:text="Welcome"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/top_view"
+                tools:ignore="MissingConstraints" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="95dp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@mipmap/ic_temp" />
+            <TextView
+                android:id="@+id/usern"
+                android:layout_width="404dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="8dp"
+                android:text="User"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/users"
+                tools:ignore="MissingConstraints" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Temperature Overtime"
-                    android:textColor="@color/black"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/tempBtn"
-                    android:layout_width="145dp"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:backgroundTint="@color/black"
-                    android:text="View"
-                    app:backgroundTint="#2E0606" />
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="150dp"
-            android:layout_height="164dp"
-            android:layout_row="1"
-            android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_columnWeight="1"
-            android:background="@color/white"
-            android:layout_margin="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
-            app:cardCornerRadius="15dp"
-            app:cardElevation="12dp">
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/connection"
                 android:layout_width="match_parent"
-                android:layout_height="94dp"
-                android:orientation="vertical"
-                android:background="@color/white">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Current Temperature"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tempText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@color/black"
-                    android:textSize="35sp"
-                    android:textStyle="bold" />
-
-
-            </LinearLayout>
-
-
-            <TextView
-                android:layout_width="55dp"
-                android:layout_height="20dp"
-                android:layout_gravity="right"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="190dp"
-                android:layout_marginRight="0dp"
-                android:text="0°"
-                android:textColor="#FF0000"
-                android:textSize="10dp" />
-
-            <TextView
-                android:layout_width="55dp"
-                android:layout_height="20dp"
-                android:layout_gravity="right"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="100dp"
-                android:layout_marginRight="0dp"
-                android:text="20°"
-                android:textColor="#FF0000"
-                android:textSize="10dp" />
-
-            <TextView
-                android:layout_width="55dp"
-                android:layout_height="20dp"
-                android:layout_gravity="right"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="160dp"
-                android:layout_marginRight="0dp"
-                android:text="7°"
-                android:textColor="#00FF00"
-                android:textSize="10dp" />
-
-            <TextView
-                android:layout_width="55dp"
-                android:layout_height="20dp"
-                android:layout_gravity="right"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="130dp"
-                android:layout_marginRight="0dp"
-                android:text="14°"
-                android:textColor="#00FF00"
-                android:textSize="10dp" />
+                android:layout_height="26dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="42dp"
+                android:gravity="center"
+                android:text="No data available on the container"
+                android:textColor="#F30202"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/spinner"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/usern"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="MissingConstraints" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="300dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_thermo_foreground" />
+                android:id="@+id/battery"
+                android:layout_width="57dp"
+                android:layout_height="60dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="160dp"
+                android:layout_marginTop="-30dp"
+                android:layout_marginBottom="50dp"
+                android:gravity="center"
+                android:text="No data available on the container"
+                android:textColor="#F30202"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/spinner"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/usern"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/batteryfull"
+                tools:ignore="MissingConstraints" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="@style/Widget.ProgressBar.Vertical"
-                android:layout_width="5dp"
-                android:layout_height="90dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-                android:progressTint="#00FF00" />
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="-40dp"
+                android:background="#B3ADAD"
+                android:gravity="center"
+                android:prompt="@string/spinner_prompt"
+                android:textAlignment="center"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.535"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/usern"
+                tools:ignore="MissingConstraints" />
+
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="match_parent"
+                android:layout_height="251dp"
+                android:layout_below="@+id/top_view"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:columnCount="2"
+                android:rowCount="3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/connection"
+                tools:ignore="MissingConstraints">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="148dp"
+                    android:layout_height="150dp"
+                    android:layout_row="1"
+                    android:layout_rowWeight="1"
+                    android:layout_column="0"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="12dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="12dp">
 
 
-        </androidx.cardview.widget.CardView>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="95dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@mipmap/ic_temp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Temperature Overtime"
+                            android:textColor="@color/black" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/tempBtn"
+                            android:layout_width="145dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:backgroundTint="@color/black"
+                            android:text="View"
+                            android:textColor="@color/white"
+                            app:backgroundTint="#2E0606" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="164dp"
+                    android:layout_row="1"
+                    android:layout_rowWeight="1"
+                    android:layout_column="1"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="12dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@color/white"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="94dp"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="Current Temperature"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tempText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/black"
+                            android:textSize="35sp"
+                            android:textStyle="bold" />
 
 
-    </GridLayout>
+                    </LinearLayout>
 
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/addContainer"
-        android:layout_width="203dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="125dp"
-        android:backgroundTint="@color/black"
-        android:text="Scan and add Container"
-        app:backgroundTint="#2E0606" />
+                    <TextView
+                        android:layout_width="55dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="190dp"
+                        android:layout_marginRight="0dp"
+                        android:text="0°"
+                        android:textColor="#FF0000"
+                        android:textSize="10dp" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+                    <TextView
+                        android:layout_width="55dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="100dp"
+                        android:layout_marginRight="0dp"
+                        android:text="20°"
+                        android:textColor="#FF0000"
+                        android:textSize="10dp" />
+
+                    <TextView
+                        android:layout_width="55dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="160dp"
+                        android:layout_marginRight="0dp"
+                        android:text="7°"
+                        android:textColor="#00FF00"
+                        android:textSize="10dp" />
+
+                    <TextView
+                        android:layout_width="55dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="130dp"
+                        android:layout_marginRight="0dp"
+                        android:text="14°"
+                        android:textColor="#00FF00"
+                        android:textSize="10dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="300dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="40dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/ic_thermo_foreground" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        style="@style/Widget.ProgressBar.Vertical"
+                        android:layout_width="5dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="40dp"
+                        android:progressTint="#00FF00" />
+
+
+                </androidx.cardview.widget.CardView>
+
+
+            </GridLayout>
+
+
+            <GridLayout
+                android:id="@+id/gridLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="251dp"
+                android:layout_below="@+id/top_view"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:columnCount="2"
+                android:rowCount="3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/connection"
+                tools:ignore="MissingConstraints">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="148dp"
+                    android:layout_height="150dp"
+                    android:layout_row="1"
+                    android:layout_rowWeight="1"
+                    android:layout_column="0"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="12dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="12dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="95dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@mipmap/ic_humidity" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Humidity Overtime"
+                            android:textColor="@color/black" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/humBtn"
+                            android:layout_width="145dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:backgroundTint="@color/black"
+                            android:text="View"
+                            android:textColor="@color/white"
+                            app:backgroundTint="#2E0606" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="164dp"
+                    android:layout_row="1"
+                    android:layout_rowWeight="1"
+                    android:layout_column="1"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="12dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@color/white"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="94dp"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="Current Humidity"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/HumText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/black"
+                            android:textSize="35sp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+            </GridLayout>
+
+            <LinearLayout
+                android:id="@+id/horizantalBtnsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gridLayout">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addContainer"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:backgroundTint="@color/black"
+                    android:text="Scan and add new Container"
+                    android:textColor="@color/white"
+                    android:textSize="10dp"
+                    app:backgroundTint="#2E0606" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/viewContBtn"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:backgroundTint="@color/black"
+                    android:text="See existing Containers"
+                    android:textColor="@color/white"
+                    android:textSize="10dp"
+                    app:backgroundTint="#2E0606" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="672dp"
-        android:layout_marginBottom="3dp"
         android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"></androidx.appcompat.widget.Toolbar>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/logoutBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:text="Logout"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="9sp"
+                app:backgroundTint="#673AB7" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/logoutBtn"
-        android:layout_width="108dp"
-        android:textColor="@color/white"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/toolbar"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="292dp"
-        android:layout_marginTop="672dp"
-        android:layout_marginEnd="11dp"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="@color/purple_500"
-        android:text="Logout"
-        app:backgroundTint="#2E0606" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chatBtn"
+                android:layout_width="0dp"
+                android:layout_margin="4dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Chat"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="9sp"
+                app:backgroundTint="#673AB7" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/chatBtn"
-        android:layout_width="wrap_content"
-        android:textColor="@color/white"
-        android:layout_height="52dp"
-        android:layout_alignBottom="@+id/toolbar"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="155dp"
-        android:layout_marginTop="674dp"
-        android:layout_marginEnd="154dp"
-        android:layout_marginBottom="2dp"
-        android:backgroundTint="@color/purple_500"
-        android:text="Chat"
-        app:backgroundTint="#2E0606" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/setting"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:text="Setting"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="9sp"
+                app:backgroundTint="#673AB7" />
+        </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/postBtn"
-        android:textColor="@color/white"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_alignBottom="@+id/toolbar"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="674dp"
-        android:layout_marginEnd="287dp"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="@color/purple_500"
-        android:text="Group Chat"
-        android:textSize="12dp"
-        app:backgroundTint="#2E0606" />
+    </RelativeLayout>
 
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

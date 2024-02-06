@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
@@ -11,14 +12,15 @@
         android:focusable="true">
 
         <!-- Add your visual representation here, such as an ImageView or View -->
-        <ImageView
-            android:id="@+id/voiceVisualizerImageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/waveform"
-            android:scaleType="fitXY" />
 
         <!-- Add other UI elements as needed, e.g., play and pause buttons -->
+
+        <ImageView
+            android:id="@+id/voiceVisualizerImageView"
+            android:layout_width="429dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/waveform" />
 
         <ImageView
             android:id="@+id/recordImgView"

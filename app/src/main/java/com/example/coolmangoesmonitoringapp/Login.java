@@ -1,16 +1,13 @@
 package com.example.coolmangoesmonitoringapp;
 
-
-import static android.content.ContentValues.TAG;
-
 import androidx.appcompat.app.AppCompatActivity;
+import static com.example.coolmangoesmonitoringapp.Profile.new_email;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -39,16 +36,15 @@ import okhttp3.Response;
 
 public class Login extends AppCompatActivity {
 
-    public static String userID;
+    public static String usernam;
 
-
-    public static String users;
-
+    public static String userId;
 
 
     public static String email;
 
-    String usern;
+
+    //String usern;
 
     EditText emailEditText, passwordEditText;
 
@@ -57,7 +53,7 @@ public class Login extends AppCompatActivity {
     private OkHttpClient client;
     FirebaseAuth auth;
     String userPattern = "^(?=.*[A-Z])(?=.*\\d).{6,}$\n";
-    android.app.ProgressDialog progressDialog;
+    android.app.ProgressDialog progressDialog1;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -68,11 +64,11 @@ public class Login extends AppCompatActivity {
 
         FirebaseApp.initializeApp(this);
 
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please Wait...");
-        progressDialog.setCancelable(false);
+        progressDialog1 = new ProgressDialog(this);
+        progressDialog1.setMessage("Please Wait...");
+        progressDialog1.setCancelable(false);
         getSupportActionBar().hide();
+
 
 
         // Initialize OkHttpClient
@@ -84,7 +80,7 @@ public class Login extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginbtn);
         regTxt = findViewById(R.id.reg_text);
-        usern = "mollym12";
+        //usern = "mollym12";
 
 
         regTxt.setOnClickListener(new View.OnClickListener (){
@@ -101,38 +97,34 @@ public class Login extends AppCompatActivity {
                 email= emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
-
-
                 if ((TextUtils.isEmpty(email))){
-                    progressDialog.dismiss();
+                    progressDialog1.dismiss();
                     Toast.makeText(Login.this, "Enter The Email", Toast.LENGTH_SHORT).show();
                 }else if (TextUtils.isEmpty(password)){
-                    progressDialog.dismiss();
+                    progressDialog1.dismiss();
                     Toast.makeText(Login.this, "Enter The Password", Toast.LENGTH_SHORT).show();
                 }else if (password.length()<6){
-                    progressDialog.dismiss();
+                    progressDialog1.dismiss();
                     passwordEditText.setError("More Then Six Characters");
                     Toast.makeText(Login.this, "Password Needs To Be Longer Then Six Characters", Toast.LENGTH_SHORT).show();
-                //}//else if (!username.matches(userPattern)) {
-                 //   progressDialog.dismiss();
-                 //   usernameEditText.setError("Give Proper username");
                 }else {
 
-                    progressDialog.show();
+                    progressDialog1.show();
 
+                    currentUsername();
 
                     auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
                         @Override
                         public void onComplete( Task<AuthResult> task) {
-                           // progressDialog.dismiss(); // Dismiss the progressDialog here
+                            runOnUiThread(() -> progressDialog1.dismiss());
 
                             if (task.isSuccessful()){
-                                userID();
-                                //currentUserID();
-                                performLogin(usern,password);
+                                performLogin(usernam,password);
+
 
                                 try {
-                                    Intent intent = new Intent(Login.this , QRscanner.class);
+                                    Intent intent = new Intent(Login.this , Containers.class);
                                     startActivity(intent);
                                     finish();
                                 }catch (Exception e){
@@ -143,46 +135,62 @@ public class Login extends AppCompatActivity {
                             }
                         }
                     });
-
                 }
-
-
-
             }
         });
 
     }
 
-    private void showSuccessToast() {
-        // Create a Toast instance
-        Toast toast = Toast.makeText(this, "Successfully Logged in", Toast.LENGTH_SHORT);
+    private void currentUsername() {
+        OkHttpClient client3 = new OkHttpClient();
 
-        // You can customize the position of the toast
-        toast.setGravity(Gravity.CENTER, 0, 0);
+        //email = new_email;
 
-        // Show the toast
-        toast.show();
-    }
 
-    private void showFailedToast() {
-        // Create a Toast instance
-        Toast toast = Toast.makeText(this, "Could not successfully log in", Toast.LENGTH_SHORT);
+        String apiUrl = "https://api2.charlie-iot.com/api/get-user-by-email/" + email;
 
-        // You can customize the position of the toast
-        toast.setGravity(Gravity.CENTER, 0, 0);
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .build();
 
-        // Show the toast
-        toast.show();
+        client3.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject json = new JSONObject(responseData);
+                        String name1 = json.getString("username");
+                        String user_id = String.valueOf(json.getInt("id"));
+
+                        runOnUiThread(() -> {
+                            usernam = name1;
+                            userId = user_id;
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // Handle error
+                }
+            }
+        });
     }
 
     public void performLogin(String username, String password) {
         RequestBody requestBody = new FormBody.Builder()
-                .add("username", username)
-                .add("password", password)
+                .add("username", username != null ? username : "")
+                .add("password", password != null ? password : "")
                 .build();
 
+
         Request request = new Request.Builder()
-                .url("http://10.0.2.2:8000/api/login/")
+                .url("https://api2.charlie-iot.com/api/login/")
                 .post(requestBody)
                 .build();
 
@@ -193,44 +201,13 @@ public class Login extends AppCompatActivity {
                     String responseData = response.body().string();
                     try {
                         JSONObject json = new JSONObject(responseData);
-                        String uname = json.getString("username");
-
-
-
-                        //Log.d(userID, "user id");
-
-                        //String temperature = json.getString("temperature");
-
-                        //String timestamp = json.getString("timestamp");
-
-                        //Float temp = Float.parseFloat(temperature);
-
-                        //float tempo = temp * 5;
-                        // float temp = 20;
-
-                        // Set the target value that you want to reach
-                        // final Float targetValue = tempo; // Adjust this value to your desired target
-
-                        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
-                        //final Timer t = new Timer();
-
                         runOnUiThread(() -> {
-                            users = uname;
-
-                            Log.d(username, "user n");
-
-                            //tempInt = Float.parseFloat(temperature);
-
-                            //textView.setText(tempData);
-                            // Update your UI elements with the extracted data
-                            // For example, update TextViews with id, temperature, and timestamp
                         });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } else {
                     // Handle error
-
                 }
             }
 
@@ -242,128 +219,4 @@ public class Login extends AppCompatActivity {
         });
 
     }
-
-    private void userID() {
-        OkHttpClient client1 = new OkHttpClient();
-
-        String apiUrl = "http://10.0.2.2:8000/api/latest-user/";
-
-        Request request = new Request.Builder()
-                .url(apiUrl)
-                .build();
-
-        client1.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String responseData = response.body().string();
-                    try {
-                        JSONObject json = new JSONObject(responseData);
-                        int id = json.getInt("id");
-
-                        userID = String.valueOf(id);
-
-                        //Log.d(userID, "user id");
-
-                        //String temperature = json.getString("temperature");
-
-                        //String timestamp = json.getString("timestamp");
-
-                        //Float temp = Float.parseFloat(temperature);
-
-                        //float tempo = temp * 5;
-                        // float temp = 20;
-
-                        // Set the target value that you want to reach
-                        // final Float targetValue = tempo; // Adjust this value to your desired target
-
-                        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
-                        //final Timer t = new Timer();
-
-                        runOnUiThread(() -> {
-
-
-                            //tempInt = Float.parseFloat(temperature);
-
-                            //textView.setText(tempData);
-                            // Update your UI elements with the extracted data
-                            // For example, update TextViews with id, temperature, and timestamp
-                        });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    // Handle error
-                }
-            }
-        });
-    }
-
-    private void currentUserID() {
-        OkHttpClient client2 = new OkHttpClient();
-
-        String apiUrl = "http://10.0.2.2:8000/api/get_user_details/";
-
-        Request request = new Request.Builder()
-                .url(apiUrl)
-                .build();
-
-        client2.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String responseData = response.body().string();
-                    try {
-                        JSONObject json = new JSONObject(responseData);
-                        int id1 = json.getInt("id");
-
-
-                        userID = String.valueOf(id1);
-
-                        //Log.d(userID, "user id");
-
-                        //String temperature = json.getString("temperature");
-
-                        //String timestamp = json.getString("timestamp");
-
-                        //Float temp = Float.parseFloat(temperature);
-
-                        //float tempo = temp * 5;
-                        // float temp = 20;
-
-                        // Set the target value that you want to reach
-                        // final Float targetValue = tempo; // Adjust this value to your desired target
-
-                        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
-                        //final Timer t = new Timer();
-
-                        runOnUiThread(() -> {
-
-
-                            //tempInt = Float.parseFloat(temperature);
-
-                            //textView.setText(tempData);
-                            // Update your UI elements with the extracted data
-                            // For example, update TextViews with id, temperature, and timestamp
-                        });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    // Handle error
-                }
-            }
-        });
-    }
-
 }

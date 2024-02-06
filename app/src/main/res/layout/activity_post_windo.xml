@@ -12,7 +12,6 @@
         android:layout_height="50dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="0dp"
         android:layout_marginBottom="50dp"
         android:gravity="center"
         android:text="Back"
@@ -49,15 +48,73 @@
         android:background="@color/white"
         android:visibility="visible">
 
-        <TextView
-            android:id="@+id/msgadpter"
+        <!-- Wrap the TextView and ImageView inside a LinearLayout -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:visibility="visible"/>
-    </ScrollView>
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/msgadpter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:visibility="visible" />
+
+            <!-- Add an ImageView to display the selected image -->
+            <ImageView
+                android:id="@+id/postedImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/voiceRecordCV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="1dp"
+                android:layout_toStartOf="@+id/profilerggg"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone">
+
+
+                <ImageView
+                    android:id="@+id/voiceVisualizerImageView"
+                    android:layout_width="190dp"
+                    android:layout_height="61dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="40dp"
+                    android:src="@drawable/waveform"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/recordBtnn"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="left"
+                    android:layout_marginEnd="-4dp"
+                    android:layout_toStartOf="@+id/voiceVisualizerImageView"
+                    android:src="@drawable/play" />
+
+                <ImageView
+                    android:id="@+id/stopBtn"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="left"
+                    android:layout_toStartOf="@+id/voiceVisualizerImageView"
+                    android:src="@drawable/pause"
+                    android:visibility="gone" />
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/ll2"
@@ -92,6 +149,7 @@
                 android:fontFamily="@font/poppins_regular"
                 android:textColor="@color/black"
                 android:hint="Type The Messages..."
+                android:textColorHint="#6A6767"
                 android:paddingStart="13.00dp" />
 
         </androidx.cardview.widget.CardView>
@@ -170,6 +228,9 @@
                 android:background="@drawable/pause" />
 
         </androidx.cardview.widget.CardView>
+
+
+
 
 
 

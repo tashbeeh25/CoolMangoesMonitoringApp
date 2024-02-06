@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,65 +8,65 @@
     android:background="@drawable/chatback"
     tools:context=".chatwindo">
 
-    <Button
-        android:id="@+id/back_btn"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="50dp"
-        android:gravity="center"
-        android:text="Back"
-        android:textColor="@color/white"
-        android:textSize="10dp"
-        android:textStyle="normal" />
+    <!-- Back Button -->
 
+    <!-- Profile Section -->
     <LinearLayout
         android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/purple_500"
-        android:gravity="center"
         android:orientation="vertical">
-
-
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileimgg"
             android:layout_width="104dp"
             android:layout_height="103dp"
-            android:layout_marginTop="7dp"
+            android:layout_gravity="center"
             android:src="@drawable/camera"
             app:civ_border_color="@color/white"
-            app:civ_border_width="2dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.226" />
+            app:civ_border_width="2dp" />
 
         <TextView
             android:id="@+id/recivername"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/poppins_regular"
-            android:gravity="center"
             android:text="Name"
             android:textColor="@color/white"
-            android:textSize="30dp" />
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/back_btn"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="821dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="Back"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="normal" />
     </LinearLayout>
 
+    <!-- RecyclerView for Messages -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/msgadpter"
         android:layout_width="match_parent"
-        android:layout_height="502dp"
-        android:layout_above="@id/ll2"
+        android:layout_height="0dp"
         android:layout_below="@+id/ll1"
-        android:layout_marginTop="7dp"
-        android:layout_marginBottom="-7dp"
-        android:padding="10dp" />
+        android:layout_above="@id/ll2"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:padding="10dp"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.5" />
 
     <LinearLayout
         android:id="@+id/ll2"
@@ -100,6 +101,7 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/poppins_regular"
                 android:hint="Type The Messages..."
+                android:textColorHint="#6A6767"
                 android:paddingStart="13.00dp" />
 
         </androidx.cardview.widget.CardView>
@@ -178,10 +180,5 @@
                 android:background="@drawable/pause" />
 
         </androidx.cardview.widget.CardView>
-
-
     </LinearLayout>
-
-
-
 </RelativeLayout>

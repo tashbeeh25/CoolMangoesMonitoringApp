@@ -1,0 +1,8 @@
+<resources>
+    <dimen name="margin_horizontal">20dp</dimen>
+    <dimen name="margin_vertical">10dp</dimen>
+    <dimen name="margin_vertical_large">15dp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="drawable_padding">20dp</dimen>
+    <dimen name="edit_text_padding">20dp</dimen>
+</resources>
